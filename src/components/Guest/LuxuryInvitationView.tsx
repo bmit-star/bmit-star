@@ -28,8 +28,10 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
   const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [showCinematicIntro, setShowCinematicIntro] = useState(true);
+  const [isIntroPlaying, setIsIntroPlaying] = useState(false);
   const [introReady, setIntroReady] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const introVideoRef = useRef<HTMLVideoElement | null>(null);
   const cinematicIntroUrl = 'https://res.cloudinary.com/sk0s89bg/video/upload/v1786686160/0e9962a6-cde8-4339-8ede-b6fdbd9b2cf6.mp4';
 
   const youtubeVideoId = extractYouTubeVideoId(invitationData.backgroundMusicUrl);
@@ -41,9 +43,18 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
     }
   }, []);
 
-  const openInvitation = () => {
+  const finishIntro = () => {
     setShowCinematicIntro(false);
     window.setTimeout(() => document.getElementById('invitation-hero')?.focus(), 350);
+  };
+
+  const startIntro = async () => {
+    setIsIntroPlaying(true);
+    try {
+      await introVideoRef.current?.play();
+    } catch {
+      // The video remains playable through its native controls as a final fallback.
+    }
   };
 
   // RSVP Form State
@@ -257,31 +268,34 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
         {showCinematicIntro && (
           <motion.section
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.08, filter: 'blur(10px)' }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[100] flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#12080B] px-5"
-            aria-label="Урилгын нээлтийн animation"
+            exit={{ opacity: 0, scale: 1.06, filter: 'blur(8px)' }}
+            transition={{ duration: 0.7, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[100] grid min-h-[100dvh] place-items-center overflow-hidden bg-[#12080B] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]"
+            aria-label="Урилгын cinematic opening"
           >
-            <video
-              src={cinematicIntroUrl}
-              autoPlay
-              muted
-              playsInline
-              preload="metadata"
-              onCanPlay={() => setIntroReady(true)}
-              onError={() => setIntroReady(true)}
-              onEnded={openInvitation}
-              className="absolute inset-0 h-full w-full object-cover opacity-70"
-            />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_15%,rgba(18,8,11,.48)_70%,#12080B_100%)]" />
-            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="relative z-10 max-w-xs text-center">
-              <div className="mx-auto mb-5 h-px w-16 bg-[#C9A45C]" />
-              <p className="font-serif text-4xl tracking-[.28em] text-[#E4C98A]">УРИЛГА</p>
-              <p className="mt-3 font-sans text-[10px] uppercase tracking-[.22em] text-[#B8A99A]">Тансаг дижитал урилга</p>
-              <button onClick={openInvitation} className="mt-10 min-h-11 rounded-full border border-[#C9A45C]/70 bg-[#12080B]/60 px-6 font-sans text-xs font-bold uppercase tracking-[.16em] text-[#E4C98A] backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[#E4C98A]">
-                {introReady ? 'Нээж үргэлжлүүлэх' : 'Ачаалж байна…'}
-              </button>
-            </motion.div>
+            <div className="relative h-[min(92dvh,900px)] w-full max-w-[430px] overflow-hidden rounded-[2rem] border border-[#C9A45C]/30 bg-black shadow-[0_20px_70px_rgba(0,0,0,.6)]">
+              <video
+                ref={introVideoRef}
+                src={cinematicIntroUrl}
+                muted
+                playsInline
+                preload="metadata"
+                onCanPlay={() => setIntroReady(true)}
+                onError={() => setIntroReady(true)}
+                onEnded={finishIntro}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${isIntroPlaying ? 'opacity-100' : 'opacity-35'}`}
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,8,11,.22),rgba(18,8,11,.05)_50%,rgba(18,8,11,.75))]" />
+              {!isIntroPlaying && (
+                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="absolute inset-x-6 bottom-10 text-center">
+                  <p className="font-sans text-[10px] uppercase tracking-[.24em] text-[#E4C98A]/80">Таны онцгой мөч</p>
+                  <button onClick={startIntro} disabled={!introReady} className="mt-4 min-h-12 w-full rounded-full border border-[#C9A45C]/70 bg-[#12080B]/75 px-6 font-sans text-xs font-bold uppercase tracking-[.16em] text-[#E4C98A] backdrop-blur-md transition-transform active:scale-95 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#E4C98A]">
+                    {introReady ? 'Урилга нээх' : 'Ачаалж байна…'}
+                  </button>
+                </motion.div>
+              )}
+              {isIntroPlaying && <div className="absolute inset-x-0 bottom-0 h-1 bg-[#C9A45C]/70 animate-pulse" />}
+            </div>
           </motion.section>
         )}
       </AnimatePresence>
@@ -382,7 +396,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       )}
 
       {/* SECTION 1: LUXURY HERO COVER */}
-      <section id="invitation-hero" tabIndex={-1} className="relative isolate min-h-screen overflow-hidden px-5 py-10 text-center outline-none sm:px-8 sm:py-14">
+      <section id="invitation-hero" tabIndex={-1} className="relative isolate min-h-[100dvh] overflow-hidden px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] text-center outline-none sm:px-8 sm:py-14">
         <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_10%_10%,rgba(193,220,234,.55),transparent_24%),radial-gradient(circle_at_90%_18%,rgba(227,240,211,.65),transparent_22%),linear-gradient(180deg,#fffef9_0%,#f7fbf5_100%)]" />
         <div className="absolute left-0 top-0 -z-10 h-56 w-56 rounded-full border-[18px] border-[#dbe9f0]/50 blur-[1px]" />
         <div className="absolute bottom-0 right-0 -z-10 h-64 w-64 rounded-full border-[22px] border-[#e2efd7]/60 blur-[1px]" />
