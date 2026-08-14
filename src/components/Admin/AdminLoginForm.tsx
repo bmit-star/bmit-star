@@ -20,11 +20,12 @@ export const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLoginSuccess, 
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
       const response = await authenticatedFetch('/api/auth/admin');
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const data = contentType.includes('application/json') ? await response.json() : null;
 
-      if (!response.ok || !data.success) {
+      if (!response.ok || !data?.success) {
         await signOut(auth);
-        throw new Error(data.error || 'Энэ бүртгэл админ эрхгүй байна.');
+        throw new Error(data?.error || 'Админ баталгаажуулалт амжилтгүй боллоо.');
       }
 
       onLoginSuccess();
