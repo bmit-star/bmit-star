@@ -477,93 +477,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className="space-y-16 pb-20">
 
-      {/* PUBLIC NAVBAR */}
-      <header className="bg-stone-900/90 backdrop-blur-xl border border-stone-800 rounded-2xl px-4 sm:px-5 py-3 sticky top-3 z-40 shadow-2xl max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex items-center justify-between w-full md:w-auto gap-4">
-
-          {/* Logo & Brand Name */}
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => { setActiveMainTab('overview'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#d4af37] via-[#f9e5af] to-[#b38b2d] flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-[#d4af37]/20 font-serif">
-              З
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold tracking-wide text-sm sm:text-base text-white font-serif">ЗАЛЛАГА</span>
-                <span className="text-[9px] uppercase tracking-wider bg-[#d4af37]/15 text-[#f9e5af] font-semibold px-2 py-0.5 rounded-full border border-[#d4af37]/30 hidden sm:inline-block">
-                  SaaS Event Platform
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Direct CTA */}
-          <div className="flex items-center gap-2 md:hidden">
-            <button
-              onClick={() => handleStartOrder('Standard')}
-              className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>Урилгаа бүтээх</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 1-CLICK TAB SWITCHER (DESKTOP & MOBILE) */}
-        <div className="flex items-center gap-1 bg-stone-950/80 p-1 rounded-xl border border-stone-800/80 overflow-x-auto max-w-full no-scrollbar">
-          {[
-            { id: 'overview', label: 'Нүүр', icon: Sparkles },
-            { id: 'features', label: 'Боломжууд', icon: Zap },
-            { id: 'templates', label: 'Загварууд', icon: Layers },
-            { id: 'pricing', label: 'Үнэ', icon: CheckCircle2 },
-            { id: 'faq', label: 'Асуулт', icon: HelpCircle },
-            { id: 'all', label: 'Бүгдийг харах', icon: Eye }
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeMainTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveMainTab(tab.id as any);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 touch-manipulation ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 shadow-md shadow-[#d4af37]/20 scale-105'
-                    : 'text-stone-300 hover:text-white hover:bg-stone-800/60'
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-slate-950' : 'text-[#d4af37]'}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Desktop CTA Buttons */}
-        <div className="hidden md:flex items-center gap-2">
-          {onNavigateCustomer && (
-            <button
-              onClick={onNavigateCustomer}
-              className="flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 px-3 py-1.5 rounded-xl text-xs font-semibold border border-stone-700 transition-all"
-            >
-              <Users className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>Нэвтрэх</span>
-            </button>
-          )}
-          <button
-            onClick={() => handleStartOrder('Standard')}
-            className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 px-4 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-[#d4af37]/20 hover:brightness-110 active:scale-95 flex items-center gap-1.5"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-            <span>Урилгаа бүтээх</span>
-          </button>
-        </div>
-
+      {/* Minimal app header: the primary navigation lives at the mobile thumb zone. */}
+      <header className="mx-auto flex max-w-7xl items-center justify-between px-3 pb-3 pt-[max(.75rem,env(safe-area-inset-top))] sm:px-6">
+        <button
+          onClick={() => { setActiveMainTab('overview'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className="flex min-h-11 items-center gap-2 rounded-2xl px-2 text-left focus:outline-none focus:ring-2 focus:ring-[#d4af37]"
+          aria-label="Нүүр хуудас руу буцах"
+        >
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-tr from-[#d4af37] via-[#f9e5af] to-[#b38b2d] font-serif text-lg font-bold text-slate-950 shadow-lg shadow-[#d4af37]/20">З</span>
+          <span className="font-serif text-sm font-bold tracking-[.12em] text-white">ЗАЛЛАГА</span>
+        </button>
+        <button
+          onClick={() => handleStartOrder('Standard')}
+          className="min-h-11 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] px-4 font-sans text-xs font-bold text-slate-950 shadow-md shadow-[#d4af37]/20 transition-transform active:scale-95"
+        >
+          Урилгаа бүтээх
+        </button>
       </header>
 
+      {/* Mobile app navigation: keeps major destinations in the thumb zone. */}
+      <nav className="fixed inset-x-3 bottom-[max(.75rem,env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md items-center justify-around rounded-2xl border border-white/10 bg-[#12080B]/90 px-2 py-2 shadow-[0_12px_35px_rgba(0,0,0,.38)] backdrop-blur-xl md:hidden" aria-label="Үндсэн цэс">
+        {[
+          { id: 'overview', label: 'Нүүр', icon: Sparkles },
+          { id: 'templates', label: 'Загвар', icon: Layers },
+          { id: 'pricing', label: 'Үнэ', icon: CheckCircle2 },
+          { id: 'faq', label: 'Тусламж', icon: HelpCircle }
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const active = activeMainTab === tab.id;
+          return <button key={tab.id} onClick={() => { setActiveMainTab(tab.id as any); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`flex min-h-11 min-w-14 flex-col items-center justify-center gap-0.5 rounded-xl px-2 font-sans text-[10px] font-bold transition-colors ${active ? 'bg-[#d4af37]/15 text-[#f9e5af]' : 'text-stone-400'}`}>
+            <Icon className="h-4 w-4" />
+            <span>{tab.label}</span>
+          </button>;
+        })}
+      </nav>
+
       {/* MAIN TAB SWITCHER CONTAINER WITH ANIMATION */}
-      <main className="min-h-[60vh] max-w-7xl mx-auto px-2 sm:px-4">
+      <main className="min-h-[60vh] max-w-7xl mx-auto px-2 pb-24 sm:px-4 md:pb-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeMainTab}
