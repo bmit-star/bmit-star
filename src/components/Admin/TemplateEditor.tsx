@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Lock, Sparkles, Save, Globe, Eye, ArrowLeft, CheckCircle2, 
-  Calendar, Clock, MapPin, Music, Image as ImageIcon, Gift, 
+import {
+  Lock, Sparkles, Save, Globe, Eye, ArrowLeft, CheckCircle2,
+  Calendar, Clock, MapPin, Music, Image as ImageIcon,
   Users, MessageSquare, Plus, Trash2, Palette, ShieldAlert,
   Share2, QrCode, Smartphone, ExternalLink, Sliders, Layers
 } from 'lucide-react';
@@ -32,7 +32,7 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
     ...order.invitationData,
     category: order.invitationData.category || initialCategoryName
   });
-  
+
   const [activeTab, setActiveTab] = useState<'content' | 'event' | 'schedule' | 'media' | 'dress' | 'toggles'>('content');
   const [previewMode, setPreviewMode] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
   const [showPublishedModal, setShowPublishedModal] = useState<boolean>(false);
@@ -186,7 +186,7 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
 
   return (
     <div className="flex flex-col h-full bg-black/90 text-slate-100 min-h-screen">
-      
+
       {/* Editor Header */}
       <div className="bg-black/40 backdrop-blur-xl border-b border-white/10 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 sticky top-[57px] z-30 shadow-2xl">
         <div className="flex items-center gap-4">
@@ -254,10 +254,10 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
 
       {/* Main Split Layout: Editor Form (Left) vs Live Preview (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 flex-1 gap-6 p-6 overflow-hidden">
-        
+
         {/* LEFT COLUMN: Restricted Form Editor (7 cols) */}
         <div className="lg:col-span-7 flex flex-col bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-          
+
           {/* Sub Navigation Tabs */}
           <div className="flex items-center gap-1 p-2 bg-black/40 backdrop-blur-md border-b border-white/10 overflow-x-auto text-xs font-medium">
             <button
@@ -318,7 +318,7 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
 
           {/* Form Fields Area */}
           <div className="p-6 overflow-y-auto max-h-[700px] space-y-5 text-xs">
-            
+
             {/* Category Selector Banner */}
             <div className="p-4 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-[#d4af37]/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2">

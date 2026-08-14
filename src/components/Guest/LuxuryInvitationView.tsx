@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import QRCode from 'qrcode';
-import { 
-  Calendar, Clock, MapPin, Music, Volume2, VolumeX, Heart, 
-  Send, Gift, QrCode, Share2, Camera, Play, Pause, Check, 
+import {
+  Calendar, Clock, MapPin, Music, Volume2, VolumeX, Heart,
+  Send, QrCode, Share2, Camera, Play, Pause, Check,
   ExternalLink, Copy, Sparkles, ChevronDown, CheckCircle2, Navigation, UserCheck,
   HelpCircle, UserX, Download, Smartphone, ShieldCheck, Mail
 } from 'lucide-react';
@@ -13,7 +13,6 @@ import { normalizeImageUrl, extractYouTubeVideoId, isYouTubeUrl } from '../../li
 import { PhotoWallView } from '../PhotoWall/PhotoWallView';
 import { LivePhotoWallScreen } from '../PhotoWall/LivePhotoWallScreen';
 import { AmbientDecorOverlay } from './AmbientDecorOverlay';
-import { InvitationGiftSection } from '../../modules/invitation/components/InvitationGiftSection';
 
 interface LuxuryInvitationViewProps {
   invitationData: InvitationData;
@@ -79,25 +78,37 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
 
-  // Countdown timer calculations
+  // Countdown uses ISO dates when available and also supports Mongolian date text.
+  const getEventTimestamp = () => {
+    const directTimestamp = Date.parse(`${invitationData.date || ''} ${invitationData.time || ''}`);
+    if (!Number.isNaN(directTimestamp)) return directTimestamp;
+
+    const values = (invitationData.date || '').match(/\d+/g)?.map(Number) || [];
+    const time = (invitationData.time || '').match(/\d+/g)?.map(Number) || [];
+    if (values.length >= 3) {
+      return new Date(values[0], values[1] - 1, values[2], time[0] || 12, time[1] || 0).getTime();
+    }
+    return null;
+  };
+
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const eventDate = new Date(invitationData.date || '2026-08-15T16:00:00');
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = eventDate.getTime() - now.getTime();
-      if (diff > 0) {
-        setTimeLeft({
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / 1000 / 60) % 60),
-          seconds: Math.floor((diff / 1000) % 60)
-        });
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [invitationData.date]);
+    const updateCountdown = () => {
+      const eventTimestamp = getEventTimestamp();
+      const diff = eventTimestamp ? Math.max(0, eventTimestamp - Date.now()) : 0;
+      setTimeLeft({
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff / 3600000) % 24),
+        minutes: Math.floor((diff / 60000) % 60),
+        seconds: Math.floor((diff / 1000) % 60)
+      });
+    };
+
+    updateCountdown();
+    const interval = window.setInterval(updateCountdown, 1000);
+    return () => window.clearInterval(interval);
+  }, [invitationData.date, invitationData.time]);
 
   const toggleMusic = () => {
     if (isYouTubeMusic) {
@@ -213,7 +224,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
           />
         </>
       )}
-      
+
       {/* Background Audio / YouTube Player */}
       {invitationData.showMusicPlayer && invitationData.backgroundMusicUrl && (
         <>
@@ -234,7 +245,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               preload="auto"
             />
           )}
-          
+
           <div className="fixed bottom-6 right-6 z-40">
             <button
               onClick={toggleMusic}
@@ -301,7 +312,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 1: LUXURY HERO COVER */}
       <section className="relative min-h-screen flex flex-col items-center justify-between text-center p-8 overflow-hidden">
-        
+
         {/* ANIMATED AMBIENT DECOR (Boroo, Stars, Moon/Sun Glow) */}
         <AmbientDecorOverlay effectType="all" />
 
@@ -417,7 +428,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
             <span>УРИЛГА НЭЭХ</span>
             <ChevronDown className="w-5 h-5 text-slate-950 group-hover:translate-y-1 transition-transform" />
           </motion.button>
-          
+
           <p className="text-[11px] font-sans text-amber-200/80 tracking-widest uppercase animate-pulse">
             Товчлуур дээр дарж баярын хөтөлбөртэй танилцана уу
           </p>
@@ -426,7 +437,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 2: PARENTS & BLESSING MESSAGE */}
       <section id="invitation-content-section" className="py-20 px-6 max-w-3xl mx-auto text-center space-y-8">
-        
+
         {/* Family Acknowledgement / Category Details */}
         {(invitationData.brideParents || invitationData.groomParents || invitationData.fatherName || invitationData.motherName || invitationData.parentsNames || invitationData.schoolName || invitationData.clanLeader) && (
           <div className="space-y-4">
@@ -515,22 +526,28 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       </section>
 
-      {/* SECTION 3: COUNTDOWN TIMER */}
+      {/* SECTION 3: EVENT COUNTDOWN */}
       {invitationData.showCountdown && (
-        <section className="py-12 bg-black/30 backdrop-blur-md border-y border-white/10 text-center px-6">
-          <div className="max-w-xl mx-auto space-y-6">
-            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#d4af37]">Баярын Өдөр Хүртэл Үлдсэн Хугацаа</span>
-            
-            <div className="grid grid-cols-4 gap-3 max-w-md mx-auto">
+        <section className="relative z-10 px-4 py-14 sm:px-6">
+          <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/50 bg-white/80 p-4 shadow-[0_20px_60px_rgba(47,71,99,0.18)] backdrop-blur-xl sm:p-6">
+            <div className="mb-5 text-center">
+              <span className="font-sans text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: primaryColor }}>Баярын өдөр хүртэл</span>
+              <p className="mt-2 font-serif text-sm text-stone-500">{invitationData.date} · {invitationData.time}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                { label: 'Өдөр', val: timeLeft.days },
-                { label: 'Цаг', val: timeLeft.hours },
-                { label: 'Минут', val: timeLeft.minutes },
-                { label: 'Сек', val: timeLeft.seconds }
-              ].map((unit, i) => (
-                <div key={i} className="bg-black/50 backdrop-blur-xl p-3 rounded-2xl border border-white/10 shadow-lg">
-                  <span className="text-2xl sm:text-3xl font-serif text-[#f9e5af] font-light block">{unit.val}</span>
-                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider">{unit.label}</span>
+                { label: 'ӨДӨР', value: timeLeft.days, color: '#d97706', max: 30 },
+                { label: 'ЦАГ', value: timeLeft.hours, color: '#2563eb', max: 24 },
+                { label: 'МИНУТ', value: timeLeft.minutes, color: '#8b5cf6', max: 60 },
+                { label: 'СЕКУНД', value: timeLeft.seconds, color: '#059669', max: 60 }
+              ].map((unit) => (
+                <div key={unit.label} className="relative isolate min-h-36 overflow-hidden rounded-3xl border border-stone-200 bg-white/90 px-3 py-5 text-center shadow-sm">
+                  <div className="absolute inset-3 rounded-full border border-current opacity-20" style={{ color: unit.color }} />
+                  <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-current border-r-current opacity-80" style={{ color: unit.color, transform: `rotate(${(unit.value / unit.max) * 360}deg)` }} />
+                  <div className="relative z-10 flex h-full flex-col items-center justify-center">
+                    <span className="font-sans text-[10px] font-extrabold tracking-[0.16em]" style={{ color: unit.color }}>{unit.label}</span>
+                    <strong className="mt-2 font-sans text-5xl font-black tracking-tighter" style={{ color: unit.color }}>{String(unit.value).padStart(2, '0')}</strong>
+                  </div>
                 </div>
               ))}
             </div>
@@ -687,7 +704,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               {/* VIP QR BADGE CARD (When Attending or Maybe) */}
               {(submittedAttendance === 'attending' || submittedAttendance === 'maybe') && generatedQrPassUrl && (
                 <div className="bg-gradient-to-b from-stone-900 via-stone-950 to-stone-900 p-6 sm:p-8 rounded-3xl border-2 border-amber-500/40 text-stone-100 font-sans shadow-2xl relative overflow-hidden space-y-5">
-                  
+
                   {/* Subtle Gold Accents */}
                   <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
                   <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
@@ -707,7 +724,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   <div className="bg-stone-900/90 p-4 rounded-2xl border border-stone-800 space-y-2 text-center">
                     <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Зочны Нэр</span>
                     <h4 className="text-xl font-bold text-white font-serif">{submittedGuestName}</h4>
-                    
+
                     <div className="pt-2 border-t border-stone-800 flex items-center justify-center gap-2">
                       <span className="text-[10px] text-stone-400 uppercase">Токен Код:</span>
                       <span className="text-sm font-mono font-bold text-amber-300 bg-stone-950 px-2.5 py-0.5 rounded border border-amber-500/30">
@@ -718,9 +735,9 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
                   {/* QR Code Canvas / Image Display */}
                   <div className="bg-white p-4 rounded-2xl border border-stone-700 shadow-xl inline-block mx-auto space-y-2">
-                    <img 
-                      src={generatedQrPassUrl} 
-                      alt="Guest QR Entrance Badge" 
+                    <img
+                      src={generatedQrPassUrl}
+                      alt="Guest QR Entrance Badge"
                       className="w-48 h-48 sm:w-56 sm:h-56 mx-auto object-contain"
                     />
                     <div className="text-[10px] font-mono text-stone-900 font-bold text-center uppercase tracking-wider">
@@ -894,9 +911,6 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
         </section>
       )}
 
-      {/* SECTION 8.5: GIFT & BANK ACCOUNT INFORMATION */}
-      <InvitationGiftSection giftInfo={invitationData.giftInfo} />
-
       {/* SECTION 9: GUESTBOOK & WISHES */}
       {invitationData.showGuestBook && (
         <section className="py-20 px-6 max-w-2xl mx-auto space-y-8 text-center font-sans">
@@ -908,7 +922,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
           {/* Leave a wish form */}
           <div className="bg-stone-900 p-6 rounded-3xl border border-stone-800 text-left text-xs space-y-3 shadow-xl">
             <h3 className="font-bold text-white text-sm">Сэтгэлийн Ерөөл Үлдээх</h3>
-            
+
             {wishSubmitted ? (
               <div className="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-emerald-300">
                 Таны ерөөлийг хүлээн авлаа! Баярлалаа.
