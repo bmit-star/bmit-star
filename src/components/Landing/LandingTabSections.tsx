@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Sparkles, CheckCircle2, Clock, HardDrive, Calendar, Music, Heart, 
-  MapPin, Eye, ArrowRight, HelpCircle, Smartphone, 
+import {
+  Sparkles, CheckCircle2, Clock, HardDrive, Calendar, Music, Heart,
+  MapPin, Eye, ArrowRight, HelpCircle, Smartphone,
   QrCode, Camera, ChevronDown, Search, X, Star
 } from 'lucide-react';
 import { Template } from '../../types';
@@ -25,24 +25,23 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
       <section className="relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] border border-rose-100 bg-[radial-gradient(circle_at_15%_10%,#fff0f5,transparent_30%),radial-gradient(circle_at_90%_80%,#ffe9ef,transparent_28%),#fffdfd] px-4 pb-12 pt-8 shadow-[0_18px_60px_rgba(202,112,142,.14)] sm:px-6 lg:px-8">
         {[...Array(16)].map((_, index) => <span key={index} className="pointer-events-none absolute h-3 w-5 rounded-[100%_0_100%_0] bg-rose-300/60 blur-[.2px] animate-[bounce_5s_ease-in-out_infinite]" style={{ left: `${(index * 19) % 100}%`, top: `${(index * 31) % 92}%`, animationDelay: `${index * 0.22}s`, transform: `rotate(${index * 29}deg)` }} />)}
         <div className="relative z-10 grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-          
+
           {/* Left Hero Copy */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 backdrop-blur-md shadow-xl text-xs font-bold text-[#f9e5af]">
               <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>✨ 2–8 цагийн дотор бэлэн болдог тансаг урилга</span>
+              <span>Дээд зэрэглэлийн мэдрэмж. Хүртээмжтэй үнэ.</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-[#754a5a] tracking-tight leading-[1.1] font-serif">
-              Таны баярын <br />
+              Онцгой мөчид, <br />
               <span className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] bg-clip-text text-transparent">
-                анхны сэтгэгдэл
-              </span> <br />
-              эндээс эхэлнэ.
+                онцгой урилга.
+              </span>
             </h1>
 
             <p className="text-base sm:text-lg text-[#8e6876] font-sans leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Зочин бүрт нэртэй хувийн линк, VIP QR тасалбар, бодит цагийн ирц бүртгэл, шууд фото хана бүхий тансаг арга хэмжээний платформыг <strong className="text-[#f9e5af] font-bold">2–8 цагийн дотор</strong> бэлтгэнэ.
+              Таны баярт зориулсан орчин үеийн дижитал урилга.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
@@ -51,7 +50,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                 className="w-full sm:w-auto bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] hover:from-[#e5be48] hover:to-[#fcebc4] text-slate-950 font-extrabold px-8 py-4 rounded-2xl text-sm transition-all shadow-2xl shadow-[#d4af37]/30 flex items-center justify-center gap-2 group active:scale-95"
               >
                 <Sparkles className="w-4 h-4 text-slate-950 group-hover:rotate-12 transition-transform" />
-                <span>Шууд Захиалах</span>
+                <span>Урилгаа бүтээх</span>
                 <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -60,7 +59,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                 className="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#805764] hover:text-[#754a5a] px-7 py-4 rounded-2xl text-sm font-bold border border-stone-800 hover:border-[#d4af37]/50 transition-all text-center flex items-center justify-center gap-2"
               >
                 <Eye className="w-4 h-4 text-[#d4af37]" />
-                <span>Жишээ Урилга Үзэх</span>
+                <span>Загвар үзэх</span>
               </button>
             </div>
 
@@ -153,42 +152,15 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
         </div>
       </section>
 
-      {/* SOCIAL PROOF / TRUST INDICATORS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-stone-900/80 border border-stone-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-stone-800">
-            <div className="space-y-1 pt-3 md:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-[#f9e5af] font-serif">★ 4.9 / 5</div>
-              <div className="text-xs text-stone-400 font-medium">Сэтгэл ханамж</div>
-            </div>
-            <div className="space-y-1 pt-3 md:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-white font-serif">500+</div>
-              <div className="text-xs text-stone-400 font-medium">Тансаг Арга Хэмжээ</div>
-            </div>
-            <div className="space-y-1 pt-3 md:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-white font-serif">20,000+</div>
-              <div className="text-xs text-stone-400 font-medium">Уригдсан Зочид</div>
-            </div>
-            <div className="space-y-1 pt-3 md:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-serif">99.9%</div>
-              <div className="text-xs text-stone-400 font-medium">Хүргэлтийн Амжилт</div>
-            </div>
-            <div className="col-span-2 md:col-span-1 space-y-1 pt-3 md:pt-0">
-              <div className="text-2xl sm:text-3xl font-extrabold text-[#f9e5af] font-serif">2–8 Цаг</div>
-              <div className="text-xs text-stone-400 font-medium">Шуурхай Бэлтгэл</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* WHY CHOOSE US - SUMMARY CARDS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-4xl font-bold text-white font-serif">
-            Яагаад биднийг сонгох вэ?
+            Гоёмсог байдалд
+илүү энгийн зам.
           </h2>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto">
-            Зөвхөн урилга бус, зочдын тань мартагдашгүй туршлагыг бүтээх цогц шийдэл.
+            Дизайн, мэдээлэл, хуваалцах бүх зүйл нэг дор.
           </p>
         </div>
 
@@ -198,8 +170,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <Clock className="w-8 h-8 text-amber-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white font-sans tracking-tight">2 - 8 Цагт Бэлэн</h3>
-              <p className="text-xs text-stone-400">Мэргэжлийн баг шуурхай бэлтгэнэ</p>
+              <h3 className="text-lg font-bold text-white font-sans tracking-tight">ГОЁМСОГ ДИЗАЙН</h3>
+              <p className="text-xs text-stone-400">Мэргэжлийн түвшний өнгө төрх.</p>
             </div>
           </div>
 
@@ -208,8 +180,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <HardDrive className="w-8 h-8 text-amber-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white font-sans tracking-tight">Тансаг Фото Цомог</h3>
-              <p className="text-xs text-stone-400">Өндөр чанартай зургийн цуглуулга</p>
+              <h3 className="text-lg font-bold text-white font-sans tracking-tight">ХЯЛБАР СОНГОЛТ</h3>
+              <p className="text-xs text-stone-400">Загвараа сонгоод мэдээллээ оруулна.</p>
             </div>
           </div>
 
@@ -218,8 +190,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <Calendar className="w-8 h-8 text-amber-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white font-sans tracking-tight">1 Сарын Эрх</h3>
-              <p className="text-xs text-stone-400">30 хоногийн турш тасралтгүй</p>
+              <h3 className="text-lg font-bold text-white font-sans tracking-tight">НЭГ ЛИНК</h3>
+              <p className="text-xs text-stone-400">Зочдодоо шууд илгээнэ.</p>
             </div>
           </div>
 
@@ -228,8 +200,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <QrCode className="w-8 h-8 text-amber-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white font-sans tracking-tight">VIP Тасалбар & Сканнер</h3>
-              <p className="text-xs text-amber-300 font-bold">Цахим ирц бүртгэлийн систем</p>
+              <h3 className="text-lg font-bold text-white font-sans tracking-tight">ХҮРТЭЭМЖТЭЙ ҮНЭ</h3>
+              <p className="text-xs text-amber-300 font-bold">Онцгой урилгыг ухаалаг үнээр.</p>
             </div>
           </div>
 
@@ -585,22 +557,23 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ handleStartOrder
     <div className="space-y-16">
       <section id="pricing" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 scroll-mt-24">
         <div className="text-center space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#d4af37]">Үнийн Нөхцөл</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#d4af37]">Таны сонголт</span>
           <h2 className="text-2xl sm:text-4xl font-bold text-white font-serif">
-            1 Цахим Урилга = 1 Сарын Турш Хязгааргүй Илгээх Эрх
+            Тансаг мэдрэмж.
+Ухаалаг үнэ.
           </h2>
           <p className="text-xs sm:text-sm text-[#f9e5af] max-w-xl mx-auto font-medium">
-            * Төлбөр баталгаажсаны дараа 2-8 цагийн дотор урилга бэлэн болж, захиалагчийн хэсэг нээгдэнэ.
+            Таны баярт тохирох сонголтыг энгийнээр.
           </p>
         </div>
 
         <div className="bg-gradient-to-b from-[#d4af37]/20 via-black/50 to-black/80 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl border-2 border-[#d4af37]/60 space-y-8 relative overflow-hidden shadow-2xl shadow-[#d4af37]/20">
           <div className="absolute top-4 right-4 bg-[#d4af37] text-slate-950 text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-md">
-            Ганц Багц • Хязгааргүй
+            Түгээмэл сонголт
           </div>
 
           <div className="space-y-4 text-center sm:text-left">
-            <span className="text-xs uppercase font-bold tracking-wider text-[#f9e5af] block">Албан Ёсны Багц</span>
+            <span className="text-xs uppercase font-bold tracking-wider text-[#f9e5af] block">Сонголт</span>
             <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-3 justify-center sm:justify-start">
               <span className="text-5xl font-bold text-white font-serif">49,000₮</span>
               <span className="text-xs text-[#f9e5af] font-semibold bg-[#d4af37]/20 px-3 py-1 rounded-full border border-[#d4af37]/30">
@@ -608,7 +581,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ handleStartOrder
               </span>
             </div>
             <p className="text-xs text-white/70 max-w-lg">
-              Таны сонгосон тансаг дижитал урилгыг мэргэжлийн түвшинд бэлтгэж, 1 сарын турш хүссэн хэмжээгээрээ зочдод илгээх боломжоор хангана.
+              Таны баярт тохирох дижитал урилга. Мэдээллээ нэг дороос удирдана.
             </p>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-white/90 pt-6 border-t border-white/10">
@@ -644,7 +617,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ handleStartOrder
             className="w-full bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] hover:from-[#e5be48] hover:to-[#fcebc4] text-slate-950 font-bold py-4 rounded-2xl text-sm transition-all shadow-xl shadow-[#d4af37]/25 flex items-center justify-center gap-2 active:scale-95"
           >
             <Sparkles className="w-5 h-5 text-slate-950" />
-            <span>Урилга Захиалах (49,000₮)</span>
+            <span>Урилгаа бүтээх →</span>
           </button>
         </div>
       </section>
@@ -675,28 +648,25 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#f9e5af] text-xs font-bold uppercase tracking-wider">
             <HelpCircle className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span>Түгээмэл Асуулт Хариулт</span>
+            <span>Түгээмэл асуулт</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold text-white font-serif">
-            Танд асуулт байна уу?
+            Түгээмэл асуулт
           </h2>
-          <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto">
-            Захиалга өгөх болон үйлчилгээний талаарх түгээмэл асуултуудын хариултыг эндээс аваарай.
-          </p>
         </div>
 
         <div className="space-y-3">
           {[
             {
-              q: "Урилга бэлэн болоход хэр хугацаа орох вэ?",
+              q: "Урилга хэзээ бэлэн болох вэ?",
               a: "Төлбөр баталгаажсанаас хойш манай мэргэжлийн баг 2-оос 8 цагийн дотор урилгыг бэлэн болгож, таны хувийн удирдлагын хэсгийг нээж өгнө."
             },
             {
-              q: "Зочид урилгаа хэрхэн хүлээн авах вэ?",
+              q: "Урилгаа хэрхэн хуваалцах вэ?",
               a: "Зочин бүрийн нэртэй хувийн холбоос болон тэдэнд зориулсан VIP QR тасалбар үүснэ. Та сошиал чат болон мессежээр нэг товшилтоор хуваалцаж болно."
             },
             {
-              q: "Урилгад оруулах мэдээллээ дараа нь өөрчилж болох уу?",
+              q: "Мэдээллээ дараа нь өөрчилж болох уу?",
               a: "Тийм. Урилга идэвхтэй байх 30 хоногийн турш та хаяг байршил, огноо, зураг, арын дуу болон бусад мэдээллээ хэзээ ч өөрийн админ хэсгээс шууд засаж өөрчлөх боломжтой."
             },
             {
@@ -704,8 +674,8 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               a: "Баярын үеэр уригдсан зочид өөрсдийн гар утаснаас урилга руу зураг оруулна. Захиалагч та зургийг шалгаж зөвшөөрснөөр баярын танхимын дэлгэц дээр шууд слайд хэлбэрээр харагдах болно."
             },
             {
-              q: "Бэлгийн данс болон QPay байршуулж болох уу?",
-              a: "Тийм. Урилга дотор дансны дугаар, дансны нэр болон QPay QR кодыг байршуулах боломжтой тул зочид хялбархан бэлгээ шилжүүлэх боломжтой."
+              q: "Зочдын тоонд хязгаар бий юу?",
+              a: "Урилгаа нэг линкээр хялбар хуваалцана. Танай баярын хэрэгцээнд тохирох нөхцөлийг захиалгын үед баталгаажуулна."
             },
             {
               q: "Урилга хэд хоног идэвхтэй байх вэ?",
@@ -744,15 +714,17 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
 
           <div className="inline-flex items-center gap-2 bg-[#d4af37]/10 border border-[#d4af37]/30 px-4 py-1.5 rounded-full text-[#f9e5af] text-xs font-semibold uppercase tracking-widest backdrop-blur-md">
             <Sparkles className="w-4 h-4 text-[#d4af37]" />
-            <span>Премиум Дижитал Урилгын Сан</span>
+            <span>Заллага</span>
           </div>
 
           <div className="space-y-4 max-w-3xl mx-auto">
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white font-serif leading-tight">
-              Таны баярын үнэ цэнэ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d]">урилгаас эхэлнэ.</span>
+              Таны мөч.
+Таны түүх.
+<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d]">Таны урилга.</span>
             </h2>
             <p className="text-sm sm:text-base text-stone-300 max-w-2xl mx-auto leading-relaxed">
-              Онцгой мөчөө зочдод мартагдашгүйгээр үлдээж, баярынхаа уур амьсгалыг премиум түвшинд хүргээрэй. 2–8 цагийн дотор бэлэн болно.
+              Онцгой өдрөө онцгой урилгаар эхлүүлээрэй.
             </p>
           </div>
 
@@ -762,14 +734,14 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               className="w-full sm:w-auto bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] hover:brightness-110 text-slate-950 font-bold px-10 py-4 rounded-2xl text-base transition-all shadow-xl shadow-[#d4af37]/30 flex items-center justify-center gap-3 active:scale-95 group"
             >
               <Sparkles className="w-5 h-5 text-slate-950 group-hover:rotate-12 transition-transform" />
-              <span>Шууд захиалах</span>
+              <span>Урилгаа бүтээх →</span>
               <ArrowRight className="w-5 h-5 text-slate-950 group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={onNavigateTemplates}
               className="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#805764] hover:text-[#754a5a] px-8 py-4 rounded-2xl text-sm font-semibold transition-all border border-stone-800 text-center"
             >
-              Загварууд үзэх
+              Загвар үзэх
             </button>
           </div>
 
@@ -788,7 +760,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#d4af37]" />
-              <span>Тансаг Фото Цомог</span>
+              <span>ХЯЛБАР СОНГОЛТ</span>
             </div>
           </div>
         </div>

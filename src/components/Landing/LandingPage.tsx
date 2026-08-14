@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Sparkles, CheckCircle2, Clock, HardDrive, Calendar, Music, Heart, Users, 
-  MapPin, Gift, Eye, ArrowRight, ShieldCheck, HelpCircle, Smartphone, 
+import {
+  Sparkles, CheckCircle2, Clock, HardDrive, Calendar, Music, Heart, Users,
+  MapPin, Gift, Eye, ArrowRight, ShieldCheck, HelpCircle, Smartphone,
   QrCode, Play, Image as ImageIcon, Check, Star, Lock, Send, X, ExternalLink,
   Search, Zap, Layers, Camera, ChevronLeft, ChevronRight, ChevronDown
 } from 'lucide-react';
@@ -326,7 +326,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   const filteredTemplates = templates.filter(t => {
     const matchesCategory = selectedCategory === 'ALL' || t.category === selectedCategory;
-    const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           t.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           t.musicTitle.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -340,7 +340,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
-  
+
   const [eventType, setEventType] = useState<'Wedding' | 'Anniversary' | 'Gala' | 'Birthday' | 'Baby Shower'>('Wedding');
   const [brideName, setBrideName] = useState('');
   const [groomName, setGroomName] = useState('');
@@ -385,8 +385,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     const slug = `urilga-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const driveId = extractGoogleDriveId(drivePhotoUrl);
-    const heroPhoto = driveId 
-      ? `https://lh3.googleusercontent.com/d/${driveId}` 
+    const heroPhoto = driveId
+      ? `https://lh3.googleusercontent.com/d/${driveId}`
       : (chosenTemplate?.thumbnail || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80');
 
     // Merge chosen template's rich default sampleData with user inputs
@@ -476,11 +476,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div className="space-y-16 pb-20">
-      
+
       {/* PUBLIC NAVBAR */}
       <header className="bg-stone-900/90 backdrop-blur-xl border border-stone-800 rounded-2xl px-4 sm:px-5 py-3 sticky top-3 z-40 shadow-2xl max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="flex items-center justify-between w-full md:w-auto gap-4">
-          
+
           {/* Logo & Brand Name */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => { setActiveMainTab('overview'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#d4af37] via-[#f9e5af] to-[#b38b2d] flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-[#d4af37]/20 font-serif">
@@ -503,7 +503,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>Захиалах</span>
+              <span>Урилгаа бүтээх</span>
             </button>
           </div>
         </div>
@@ -514,7 +514,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             { id: 'overview', label: 'Нүүр', icon: Sparkles },
             { id: 'features', label: 'Боломжууд', icon: Zap },
             { id: 'templates', label: 'Загварууд', icon: Layers },
-            { id: 'pricing', label: 'Үнэ (49k)', icon: CheckCircle2 },
+            { id: 'pricing', label: 'Үнэ', icon: CheckCircle2 },
             { id: 'faq', label: 'Асуулт', icon: HelpCircle },
             { id: 'all', label: 'Бүгдийг харах', icon: Eye }
           ].map((tab) => {
@@ -556,7 +556,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 px-4 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-[#d4af37]/20 hover:brightness-110 active:scale-95 flex items-center gap-1.5"
           >
             <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-            <span>Шууд Захиалах</span>
+            <span>Урилгаа бүтээх</span>
           </button>
         </div>
 
@@ -677,7 +677,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* SAMPLE TEMPLATES PREVIEW & CATEGORY FILTER */}
       <section id="templates" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-24">
-        
+
         {/* Header & Search */}
         <div className="bg-stone-900/90 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-stone-800 shadow-2xl space-y-6">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -780,7 +780,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filteredTemplates.map((tpl) => (
-              <div 
+              <div
                 key={tpl.id}
                 className="bg-stone-900/90 rounded-3xl overflow-hidden border border-stone-800 hover:border-[#d4af37]/60 transition-all group flex flex-col justify-between shadow-2xl relative"
               >
@@ -839,7 +839,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       className="flex-1 bg-gradient-to-r from-[#d4af37] to-[#f9e5af] hover:from-[#e5be48] hover:to-[#fcebc4] text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all shadow-md shadow-[#d4af37]/20 flex items-center justify-center gap-1.5 active:scale-95"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5 text-slate-950" />
-                      <span>Захиалах</span>
+                      <span>Урилгаа бүтээх</span>
                     </button>
                   </div>
                 </div>
@@ -1066,10 +1066,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           <div className="space-y-4 max-w-3xl mx-auto">
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white font-serif leading-tight">
-              Таны баярын үнэ цэнэ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d]">урилгаас эхэлнэ.</span>
+              Таны мөч. <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d]">Таны урилга.</span>
             </h2>
             <p className="text-sm sm:text-base text-stone-300 max-w-2xl mx-auto leading-relaxed">
-              Онцгой мөчөө зочдод мартагдашгүйгээр үлдээж, баярынхаа уур амьсгалыг премиум түвшинд хүргээрэй. 2–8 цагийн дотор бэлэн болно.
+              Онцгой өдрөө онцгой урилгаар эхлүүлээрэй.
             </p>
           </div>
 
@@ -1079,14 +1079,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="w-full sm:w-auto bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] hover:brightness-110 text-slate-950 font-bold px-10 py-4 rounded-2xl text-base transition-all shadow-xl shadow-[#d4af37]/30 flex items-center justify-center gap-3 active:scale-95 group"
             >
               <Sparkles className="w-5 h-5 text-slate-950 group-hover:rotate-12 transition-transform" />
-              <span>Шууд захиалах</span>
+              <span>Урилгаа бүтээх →</span>
               <ArrowRight className="w-5 h-5 text-slate-950 group-hover:translate-x-1 transition-transform" />
             </button>
             <a
               href="#templates"
               className="w-full sm:w-auto bg-stone-900/90 hover:bg-stone-800 text-stone-200 hover:text-white px-8 py-4 rounded-2xl text-sm font-semibold transition-all border border-stone-800 text-center"
             >
-              Загварууд үзэх
+              Загвар үзэх
             </a>
           </div>
 
@@ -1179,7 +1179,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {showOrderModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-stone-900 border border-[#d4af37]/40 rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 text-white shadow-2xl my-8 relative">
-            
+
             {/* Close Button */}
             <button
               onClick={() => setShowOrderModal(false)}
@@ -1264,12 +1264,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             ) : (
               <form onSubmit={handleSubmitOrder} className="space-y-5 text-xs">
-                
+
                 {/* STEP 1: CLIENT REGISTRATION */}
                 {formStep === 1 && (
                   <div className="space-y-4">
                     <h4 className="font-bold text-sm text-[#f9e5af]">1. Захиалагчийн Мэдээлэл</h4>
-                    
+
                     <div className="space-y-1">
                       <label className="text-stone-300 font-semibold block">Таны Бүтэн Нэр *</label>
                       <input
