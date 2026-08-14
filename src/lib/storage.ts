@@ -88,11 +88,17 @@ export const getStoredTemplates = (): Template[] => {
       return INITIAL_TEMPLATES;
     }
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length < INITIAL_TEMPLATES.length) {
+    if (!Array.isArray(parsed)) {
       localStorage.setItem(TEMPLATES_KEY, JSON.stringify(INITIAL_TEMPLATES));
       return INITIAL_TEMPLATES;
     }
-    return parsed;
+
+    // Keep exactly one editable template for every public event category.
+    const normalized = INITIAL_TEMPLATES.map((primary) =>
+      parsed.find((template: Template) => template.category === primary.category) || primary
+    );
+    localStorage.setItem(TEMPLATES_KEY, JSON.stringify(normalized));
+    return normalized;
   } catch (e) {
     console.error('Failed to parse templates', e);
     return INITIAL_TEMPLATES;

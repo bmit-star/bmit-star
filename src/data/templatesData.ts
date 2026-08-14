@@ -1225,3 +1225,16 @@ export const ALL_39_TEMPLATES: Template[] = [
     }
   }
 ];
+
+// The public catalog intentionally exposes one fully editable base template per event type.
+const PRIMARY_CATEGORY_ORDER = [
+  'Хурим', 'Төрсөн өдөр', 'Хүүхдийн баяр', 'Сэвлэг үргээх ёслол', 'Ургийн баяр',
+  'Төгсөлт', 'Байгууллагын арга хэмжээ', 'Нээлт', 'Үдэшлэг', 'Шагнал гардуулах',
+  'Уламжлалт ёслол', 'Дурсгалын арга хэмжээ', 'Бусад'
+];
+
+export const PRIMARY_CATEGORY_TEMPLATES: Template[] = PRIMARY_CATEGORY_ORDER.map((category) => {
+  const template = ALL_39_TEMPLATES.find((item) => item.category === category);
+  if (!template) throw new Error(`Missing primary template for ${category}`);
+  return template;
+});

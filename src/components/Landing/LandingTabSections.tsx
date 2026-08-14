@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, CheckCircle2, Clock, HardDrive, Calendar, Music, Heart, 
   MapPin, Eye, ArrowRight, HelpCircle, Smartphone, 
@@ -22,8 +22,9 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
   return (
     <div className="space-y-16">
       {/* HERO SECTION */}
-      <section className="relative pt-8 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <section className="relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] border border-rose-100 bg-[radial-gradient(circle_at_15%_10%,#fff0f5,transparent_30%),radial-gradient(circle_at_90%_80%,#ffe9ef,transparent_28%),#fffdfd] px-4 pb-12 pt-8 shadow-[0_18px_60px_rgba(202,112,142,.14)] sm:px-6 lg:px-8">
+        {[...Array(16)].map((_, index) => <span key={index} className="pointer-events-none absolute h-3 w-5 rounded-[100%_0_100%_0] bg-rose-300/60 blur-[.2px] animate-[bounce_5s_ease-in-out_infinite]" style={{ left: `${(index * 19) % 100}%`, top: `${(index * 31) % 92}%`, animationDelay: `${index * 0.22}s`, transform: `rotate(${index * 29}deg)` }} />)}
+        <div className="relative z-10 grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           
           {/* Left Hero Copy */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
@@ -32,7 +33,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <span>✨ 2–8 цагийн дотор бэлэн болдог тансаг урилга</span>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] font-serif">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-[#754a5a] tracking-tight leading-[1.1] font-serif">
               Таны баярын <br />
               <span className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] bg-clip-text text-transparent">
                 анхны сэтгэгдэл
@@ -40,7 +41,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               эндээс эхэлнэ.
             </h1>
 
-            <p className="text-base sm:text-lg text-stone-200 font-sans leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <p className="text-base sm:text-lg text-[#8e6876] font-sans leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Зочин бүрт нэртэй хувийн линк, VIP QR тасалбар, бодит цагийн ирц бүртгэл, шууд фото хана бүхий тансаг арга хэмжээний платформыг <strong className="text-[#f9e5af] font-bold">2–8 цагийн дотор</strong> бэлтгэнэ.
             </p>
 
@@ -56,7 +57,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
 
               <button
                 onClick={onNavigateTemplates}
-                className="w-full sm:w-auto bg-stone-900/90 hover:bg-stone-800 text-stone-200 hover:text-white px-7 py-4 rounded-2xl text-sm font-bold border border-stone-800 hover:border-[#d4af37]/50 transition-all text-center flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#805764] hover:text-[#754a5a] px-7 py-4 rounded-2xl text-sm font-bold border border-stone-800 hover:border-[#d4af37]/50 transition-all text-center flex items-center justify-center gap-2"
               >
                 <Eye className="w-4 h-4 text-[#d4af37]" />
                 <span>Жишээ Урилга Үзэх</span>
@@ -494,326 +495,85 @@ interface TemplatesSectionProps {
   handleStartOrder: (pkg: 'Standard' | 'VIP') => void;
 }
 
+const CATALOG_STYLES = [
+  ['#f8e9ed', '#b86f83'], ['#fff0d7', '#c17d32'], ['#e2f1fb', '#5588ad'],
+  ['#f7ead4', '#9a7445'], ['#e8f0db', '#648451'], ['#e9e5fa', '#7764a9'],
+  ['#e4eff1', '#4c8187'], ['#fff1e6', '#c67745'], ['#f5e7fb', '#a55d9c'],
+  ['#f4e8cd', '#9a782c'], ['#f4ead8', '#8d6033'], ['#edf0f4', '#73808e'], ['#eeeaf8', '#77679e']
+];
+
 export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
-  templates,
-  filteredTemplates,
-  selectedCategory,
-  setSelectedCategory,
-  searchQuery,
-  setSearchQuery,
-  getCategoryCount,
-  CATEGORY_FINISHED_SAMPLES,
-  setPreviewCustomData,
-  setPreviewTemplate,
-  setSelectedTemplateId,
-  handleStartOrder
+  templates, selectedCategory, setSelectedCategory, searchQuery, setSearchQuery,
+  setPreviewTemplate, setSelectedTemplateId, handleStartOrder
 }) => {
+  const [page, setPage] = useState(0);
+  const [isTurning, setIsTurning] = useState(false);
+  const catalog = CATEGORIES.map((category) => templates.find((template) => template.category === category.name)).filter(Boolean) as Template[];
+  const matches = catalog.filter((template) => selectedCategory === 'ALL' || template.category === selectedCategory)
+    .filter((template) => `${template.title} ${template.category}`.toLowerCase().includes(searchQuery.toLowerCase()));
+  const active = matches[page % Math.max(1, matches.length)];
+
+  const turnPage = (direction: number) => {
+    if (!matches.length) return;
+    setIsTurning(true);
+    try {
+      const context = new AudioContext();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(420, context.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(150, context.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.025, context.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.14);
+      oscillator.connect(gain).connect(context.destination);
+      oscillator.start(); oscillator.stop(context.currentTime + 0.14);
+    } catch { /* Audio is optional and needs a user gesture. */ }
+    setTimeout(() => { setPage((current) => (current + direction + matches.length) % matches.length); setIsTurning(false); }, 180);
+  };
+
+  if (!active) return null;
+  const category = CATEGORIES.find((item) => item.name === active.category)!;
+  const [soft, accent] = CATALOG_STYLES[CATEGORIES.findIndex((item) => item.name === active.category) % CATALOG_STYLES.length];
+
   return (
-    <div className="space-y-16">
-      {/* INTERACTIVE LIVE PHONE PREVIEW LAUNCHER (MODAL PREVIEW) */}
-      <section id="live-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-24">
-        <div className="bg-stone-900/90 border border-[#d4af37]/40 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 relative overflow-hidden">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#f9e5af] text-xs font-bold uppercase tracking-widest">
-              <Smartphone className="w-4 h-4 text-[#d4af37]" />
-              <span>Шууд Туршиж Үзэх Платформ</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-white font-serif">
-              Зочин урилгыг гар утсан дээрээ <span className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] bg-clip-text text-transparent">хэрхэн харах вэ?</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-stone-300">
-              Баярынхаа төрлийг сонгож дарахад зочин урилга хүлээн авсан бодит харагдац тусдаа цонхоор нээгдэнэ.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-            {CATEGORY_FINISHED_SAMPLES.map((sample) => (
-              <div
-                key={sample.id}
-                onClick={() => setPreviewCustomData({
-                  title: sample.title,
-                  category: sample.category,
-                  invitationData: sample.invitationData
-                })}
-                className="bg-stone-950/90 border border-stone-800 hover:border-[#d4af37] rounded-2xl p-4 space-y-4 cursor-pointer group transition-all shadow-xl hover:-translate-y-1 relative overflow-hidden"
-              >
-                <div className="aspect-[16/10] rounded-xl overflow-hidden relative bg-stone-900">
-                  <img src={sample.thumbnail} alt={sample.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-transparent"></div>
-                  <span className="absolute top-2 left-2 bg-black/80 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30">
-                    {sample.category}
-                  </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-xs">
-                    <span className="bg-gradient-to-r from-[#d4af37] to-[#b38b2d] text-slate-950 text-xs font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-1.5">
-                      <Eye className="w-4 h-4" />
-                      <span>Бодит Харагдац Нээх</span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-white font-serif group-hover:text-[#f9e5af] transition-colors">{sample.title}</h4>
-                  <p className="text-[11px] text-stone-400 line-clamp-1">{sample.subtitle}</p>
-                </div>
-
-                <div className="pt-2 border-t border-stone-800/80 flex items-center justify-between text-xs text-stone-300">
-                  <span className="text-[11px] text-amber-300/90 font-medium">✨ {sample.invitationData.date}</span>
-                  <button className="text-xs text-[#d4af37] font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Нээх</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center pt-2">
-            <p className="text-xs text-stone-400">
-              💡 Зөвлөмж: Урилга бүр дээр дарахад зочны нэртэй хувийн линк, VIP QR код, цахим ирц болон фото хана бүрэн ажиллах бодит цонх нээгдэнэ.
-            </p>
-          </div>
+    <section id="templates" className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] border border-rose-100 bg-[#fffafc] px-4 py-10 shadow-[0_20px_70px_rgba(178,107,132,.15)] sm:px-10">
+      <div className="pointer-events-none absolute inset-0 opacity-50 [background-image:radial-gradient(circle_at_8%_12%,#f8dce7_0,transparent_18%),radial-gradient(circle_at_92%_80%,#f7dce5_0,transparent_20%)]" />
+      <div className="relative space-y-7">
+        <header className="text-center">
+          <span className="font-sans text-xs font-bold uppercase tracking-[0.25em] text-rose-400">Zallaga invitation atelier</span>
+          <h2 className="mt-2 font-serif text-3xl text-[#6d4855] sm:text-5xl">Баяр бүрт нэг онцгой загвар</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-[#95717c]">Ангилал бүр өөрийн утга, өнгө, дүрслэлтэй. Сонгосон загвараа админаас бүрэн засварлана.</p>
+        </header>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button onClick={() => { setSelectedCategory('ALL'); setPage(0); }} className={`rounded-full px-3 py-2 text-xs font-bold ${selectedCategory === 'ALL' ? 'bg-rose-400 text-white' : 'bg-white text-rose-500 border border-rose-100'}`}>✨ Бүгд</button>
+          {CATEGORIES.map((item) => <button key={item.id} onClick={() => { setSelectedCategory(item.name); setPage(0); }} className={`rounded-full px-3 py-2 text-xs font-bold ${selectedCategory === item.name ? 'bg-rose-400 text-white' : 'bg-white text-[#8b6872] border border-rose-100'}`}>{item.icon} {item.name}</button>)}
         </div>
-      </section>
-
-      {/* CATEGORY FINISHED SAMPLES SHOWCASE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="bg-gradient-to-r from-stone-900 via-stone-950 to-stone-900 p-6 sm:p-8 rounded-3xl border border-[#d4af37]/30 shadow-2xl space-y-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-stone-800 pb-5">
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#f9e5af] text-[11px] font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Бэлэн Болсон Бодит Урилгын Загварууд</span>
+        <div className="mx-auto max-w-md"><input value={searchQuery} onChange={(event) => { setSearchQuery(event.target.value); setPage(0); }} placeholder="Ангиллаар хайх..." className="w-full rounded-full border border-rose-100 bg-white px-5 py-3 text-sm text-[#6d4855] outline-none focus:border-rose-300" /></div>
+        <div className="mx-auto grid max-w-4xl grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-6">
+          <button onClick={() => turnPage(-1)} className="z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-rose-400 shadow-md" aria-label="Өмнөх загвар">‹</button>
+          <article className={`relative min-h-[430px] overflow-hidden rounded-[2rem] border border-white bg-white shadow-xl transition-all duration-200 ${isTurning ? 'rotate-y-6 scale-[.98] opacity-80' : ''}`}>
+            <div className="grid h-full md:grid-cols-2">
+              <div className="relative min-h-64 overflow-hidden" style={{ backgroundColor: soft }}>
+                <img src={active.thumbnail} alt={active.title} className="absolute inset-0 h-full w-full object-cover mix-blend-multiply opacity-85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+                <div className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 text-xs font-bold" style={{ color: accent }}>{category.icon} {category.name}</div>
+                <div className="absolute bottom-5 left-5 right-5 text-white"><p className="font-serif text-3xl drop-shadow">{active.title}</p><p className="mt-1 text-xs">{category.description}</p></div>
+                <div className="absolute -right-5 bottom-8 h-24 w-24 rotate-45 border-[12px] border-white/60" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white font-serif pt-1">
-                Баярын Ангилал Бүрээр Жишээ Урилга Харах
-              </h2>
-              <p className="text-xs text-stone-300 max-w-2xl">
-                Та өөрийн баярын ангилалд тохирох бэлэн болсон урилгыг сонгож, зочид хэрхэн харахыг бодитоор туршиж үзээрэй.
-              </p>
+              <div className="flex flex-col justify-between p-7 text-center sm:p-10">
+                <div><span className="text-xs font-bold uppercase tracking-[.2em]" style={{ color: accent }}>Editable template</span><h3 className="mt-3 font-serif text-3xl text-[#644c55]">{category.name}</h3><p className="mt-4 text-sm leading-6 text-[#876f76]">{category.description}. Нэр, огноо, зураг, дэвсгэр, өнгө, хөтөлбөр болон бусад бүх талбарыг засварлана.</p></div>
+                <div className="mt-7 flex gap-3"><button onClick={() => setPreviewTemplate(active)} className="flex-1 rounded-xl border border-rose-200 py-3 text-xs font-bold text-rose-500">Харах</button><button onClick={() => { setSelectedTemplateId(active.id); handleStartOrder('Standard'); }} className="flex-1 rounded-xl py-3 text-xs font-bold text-white shadow-md" style={{ backgroundColor: accent }}>Сонгох</button></div>
+              </div>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CATEGORY_FINISHED_SAMPLES.map((sample) => (
-              <div 
-                key={sample.id}
-                className="bg-stone-900/90 rounded-2xl overflow-hidden border border-stone-800 hover:border-[#d4af37] transition-all group flex flex-col justify-between shadow-xl relative"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden bg-stone-950">
-                  <img
-                    src={sample.thumbnail}
-                    alt={sample.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/30 to-transparent"></div>
-                  <span className="absolute top-3 left-3 bg-black/85 backdrop-blur-md text-[#f9e5af] text-[10px] font-bold px-3 py-1 rounded-full border border-[#d4af37]/40 shadow-md">
-                    {sample.category}
-                  </span>
-                  <span className="absolute top-3 right-3 bg-[#d4af37] text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md font-serif">
-                    {sample.badge}
-                  </span>
-                  <div className="absolute bottom-3 left-3 right-3 space-y-0.5">
-                    <h4 className="text-base font-bold text-white font-serif">{sample.title}</h4>
-                    <p className="text-[11px] text-stone-300 font-medium truncate">{sample.subtitle}</p>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-stone-950/80 border-t border-stone-800 flex items-center justify-between gap-2">
-                  <div className="text-[11px] text-amber-200/80 font-medium truncate">
-                    ✨ {sample.invitationData.date}
-                  </div>
-                  <button
-                    onClick={() => setPreviewCustomData({
-                      title: sample.title,
-                      category: sample.category,
-                      invitationData: sample.invitationData
-                    })}
-                    className="bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] hover:brightness-110 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md flex items-center gap-1.5 shrink-0 active:scale-95"
-                  >
-                    <Eye className="w-3.5 h-3.5 text-slate-950" />
-                    <span>Шууд Үзэх</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          </article>
+          <button onClick={() => turnPage(1)} className="z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-rose-400 shadow-md" aria-label="Дараах загвар">›</button>
         </div>
-      </section>
-
-      {/* SAMPLE TEMPLATES PREVIEW & CATEGORY FILTER */}
-      <section id="templates" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-24">
-        <div className="bg-stone-900/90 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-stone-800 shadow-2xl space-y-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#d4af37]">Загварын Сан (39 Тансаг Загвар)</span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white font-serif">
-                Ангилал Бүрээр Шүүж Сонгох
-              </h2>
-              <p className="text-xs text-stone-300 max-w-xl">
-                Та өөрийн баяр ёслолд тохирох ангиллыг сонгон, ганцхан товшилтоор урилгатайгаа танилцаж шууд захиалаарай.
-              </p>
-            </div>
-
-            <div className="relative w-full md:w-72">
-              <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Загварын нэр, ангиллаар хайх..."
-                className="w-full bg-stone-950 border border-stone-800 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-stone-100 placeholder-stone-500 focus:outline-none focus:border-[#d4af37] transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-2 pt-2 border-t border-stone-800">
-            <div className="flex items-center justify-between text-xs text-stone-300 mb-2">
-              <span className="font-semibold text-[#f9e5af] uppercase tracking-wider text-[11px]">
-                Баярын Ангилал:
-              </span>
-              <span className="text-[11px] text-stone-400">
-                Илэрц: <strong className="text-white font-bold">{filteredTemplates.length}</strong> загвар
-              </span>
-            </div>
-
-            <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-1 items-center">
-              <button
-                onClick={() => setSelectedCategory('ALL')}
-                className={`px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-xs font-semibold transition-all flex items-center gap-1.5 border touch-manipulation min-h-[40px] sm:min-h-[44px] ${
-                  selectedCategory === 'ALL'
-                    ? 'bg-[#d4af37] text-slate-950 font-bold border-[#d4af37] shadow-lg shadow-[#d4af37]/20 scale-102'
-                    : 'bg-stone-950 text-stone-300 border-stone-800 hover:border-amber-500/50 hover:bg-stone-800'
-                }`}
-              >
-                <span>✨</span>
-                <span>Бүгд</span>
-                <span className="text-[10px] opacity-80 font-mono px-1.5 py-0.2 bg-black/40 rounded-full">
-                  {templates.length}
-                </span>
-              </button>
-
-              {CATEGORIES.map(cat => {
-                const count = getCategoryCount(cat.name);
-                const isSelected = selectedCategory === cat.name;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.name)}
-                    className={`px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-xs font-semibold transition-all flex items-center gap-1.5 border touch-manipulation min-h-[40px] sm:min-h-[44px] ${
-                      isSelected
-                        ? 'bg-[#d4af37] text-slate-950 font-bold border-[#d4af37] shadow-lg shadow-[#d4af37]/20 scale-102'
-                        : 'bg-stone-950 text-stone-300 border-stone-800 hover:border-amber-500/50 hover:bg-stone-800'
-                    }`}
-                  >
-                    <span>{cat.icon}</span>
-                    <span>{cat.name}</span>
-                    <span className="text-[10px] opacity-80 font-mono px-1.5 py-0.2 bg-black/40 rounded-full">
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {filteredTemplates.length === 0 ? (
-          <div className="p-12 text-center bg-stone-900/90 rounded-3xl border border-stone-800 text-stone-400 space-y-3">
-            <Search className="w-8 h-8 text-stone-500 mx-auto" />
-            <h3 className="text-base font-bold text-white">Загвар олдсонгүй</h3>
-            <p className="text-xs">Таны хайсан үг эсвэл сонгосон ангилалд тохирох загвар одоогоор байхгүй байна.</p>
-            <button
-              onClick={() => { setSelectedCategory('ALL'); setSearchQuery(''); }}
-              className="bg-[#d4af37] text-slate-950 px-4 py-2 rounded-xl text-xs font-bold"
-            >
-              Бүх загварыг харах
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredTemplates.map((tpl) => (
-              <div 
-                key={tpl.id}
-                className="bg-stone-900/90 rounded-3xl overflow-hidden border border-stone-800 hover:border-[#d4af37]/60 transition-all group flex flex-col justify-between shadow-2xl relative"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-stone-950">
-                  <img
-                    src={tpl.thumbnail}
-                    alt={tpl.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent"></div>
-
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="bg-black/85 backdrop-blur-md text-[#f9e5af] text-[10px] font-bold px-3 py-1 rounded-full border border-[#d4af37]/40 shadow-md">
-                      {tpl.category}
-                    </span>
-                    {tpl.isPremium && (
-                      <span className="bg-gradient-to-r from-[#d4af37] to-[#f9e5af] text-slate-950 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-0.5 shadow-md">
-                        <Star className="w-3 h-3 fill-slate-950" />
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] text-white">
-                    <span className="text-stone-200 font-medium truncate">{tpl.animationType}</span>
-                    <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold text-[10px]">
-                      49,000₮
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-5 space-y-4 flex-1 flex flex-col justify-between">
-                  <div className="space-y-1.5">
-                    <h3 className="font-bold text-base text-white group-hover:text-[#f9e5af] transition-colors leading-snug">
-                      {tpl.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-xs text-stone-300">
-                      <Music className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
-                      <span className="truncate">{tpl.musicTitle}</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-stone-800 flex items-center gap-2">
-                    <button
-                      onClick={() => setPreviewTemplate(tpl)}
-                      className="flex-1 bg-stone-950 hover:bg-stone-800 text-stone-100 font-semibold py-2.5 rounded-xl text-xs transition-all border border-stone-800 flex items-center justify-center gap-1.5"
-                    >
-                      <Eye className="w-3.5 h-3.5 text-[#d4af37]" />
-                      <span>Үзэх</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setSelectedTemplateId(tpl.id);
-                        handleStartOrder('Standard');
-                      }}
-                      className="flex-1 bg-gradient-to-r from-[#d4af37] to-[#f9e5af] hover:from-[#e5be48] hover:to-[#fcebc4] text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all shadow-md shadow-[#d4af37]/20 flex items-center justify-center gap-1.5 active:scale-95"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-slate-950" />
-                      <span>Захиалах</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-    </div>
+        <p className="text-center text-xs text-[#a6878f]">Хуудсыг эргүүлэх товчийг дарахад зөөлөн цаасны чимээ гарна.</p>
+      </div>
+    </section>
   );
 };
 
-
-// ==========================================
 // 4. PRICING TAB SECTION (Үнэ)
 // ==========================================
 interface PricingSectionProps {
@@ -1007,7 +767,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             </button>
             <button
               onClick={onNavigateTemplates}
-              className="w-full sm:w-auto bg-stone-900/90 hover:bg-stone-800 text-stone-200 hover:text-white px-8 py-4 rounded-2xl text-sm font-semibold transition-all border border-stone-800 text-center"
+              className="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#805764] hover:text-[#754a5a] px-8 py-4 rounded-2xl text-sm font-semibold transition-all border border-stone-800 text-center"
             >
               Загварууд үзэх
             </button>

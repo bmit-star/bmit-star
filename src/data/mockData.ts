@@ -1,7 +1,7 @@
 import { Template, Order, Customer } from '../types';
-import { ALL_39_TEMPLATES } from './templatesData';
+import { PRIMARY_CATEGORY_TEMPLATES } from './templatesData';
 
-export const INITIAL_TEMPLATES: Template[] = ALL_39_TEMPLATES;
+export const INITIAL_TEMPLATES: Template[] = PRIMARY_CATEGORY_TEMPLATES;
 
 export const INITIAL_ORDERS: Order[] = [
   {
