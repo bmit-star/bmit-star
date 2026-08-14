@@ -238,7 +238,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
   } : undefined;
 
   return (
-    <div className="bg-stone-950 text-stone-100 font-serif selection:bg-amber-500/30 min-h-screen relative overflow-x-hidden">
+    <div className="min-h-screen relative overflow-x-hidden bg-[#fffdf7] text-[#314b52] font-serif selection:bg-[#dcefee]">
       {backgroundImageUrl && (
         <>
           <div className="fixed inset-0 z-0 pointer-events-none" style={backgroundStyle} aria-hidden="true" />
@@ -274,7 +274,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
           <div className="fixed bottom-6 right-6 z-40">
             <button
               onClick={toggleMusic}
-              className="w-12 h-12 rounded-full bg-stone-900/90 backdrop-blur-md border border-amber-500/40 text-amber-300 flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all"
+              className="w-12 h-12 rounded-full bg-stone-900/90 backdrop-blur-md border border-amber-500/40 text-[#638c98] flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all"
               title={isPlayingMusic ? 'Дууг зогсоох' : 'Арын дуу тоглуулах'}
             >
               {isPlayingMusic ? (
@@ -284,7 +284,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   <span className="w-1 h-2 bg-amber-300 animate-bounce delay-200"></span>
                 </div>
               ) : (
-                <Music className="w-5 h-5 text-amber-400" />
+                <Music className="w-5 h-5 text-[#779ca6]" />
               )}
             </button>
           </div>
@@ -295,14 +295,14 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       {isPreviewMode && (
         <div className="sticky top-0 z-50 bg-stone-900/95 border-b border-amber-500/30 px-4 py-2.5 backdrop-blur-md shadow-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 font-bold text-amber-300">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+            <span className="inline-flex items-center gap-1.5 font-bold text-[#638c98]">
+              <Sparkles className="w-3.5 h-3.5 text-[#779ca6] animate-spin" />
               <span>Зочин бүрт нэртэй хувийн линк өгөх боломжтой:</span>
             </span>
           </div>
 
           <div className="flex items-center gap-2 flex-1 max-w-md">
-            <span className="text-stone-400 hidden sm:inline shrink-0">Зочны нэр:</span>
+            <span className="text-[#728b90] hidden sm:inline shrink-0">Зочны нэр:</span>
             <input
               type="text"
               value={personalizedGuestName}
@@ -312,12 +312,12 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                 setWishName(e.target.value);
               }}
               placeholder="Нэр бичих (ж: Г.Болд, Аав, Ээж танаа)..."
-              className="bg-stone-950 border border-amber-500/40 rounded-lg px-3 py-1 text-white text-xs w-full focus:outline-none focus:border-amber-400 font-sans"
+              className="bg-[#f7fbf8] border border-amber-500/40 rounded-lg px-3 py-1 text-white text-xs w-full focus:outline-none focus:border-amber-400 font-sans"
             />
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
-            <span className="text-[10px] text-stone-400 hidden md:inline">Турших нэрс:</span>
+            <span className="text-[10px] text-[#728b90] hidden md:inline">Турших нэрс:</span>
             {['Б.Болд', 'Эрхэм Аав, Ээж', 'Сүйт залуугийн тал'].map((sampleName) => (
               <button
                 key={sampleName}
@@ -326,7 +326,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   setGuestName(sampleName);
                   setWishName(sampleName);
                 }}
-                className="bg-stone-800 hover:bg-amber-500/20 text-stone-200 hover:text-amber-200 border border-stone-700 rounded px-2 py-0.5 text-[10px] transition-colors"
+                className="bg-stone-800 hover:bg-amber-500/20 text-[#45636b] hover:text-amber-200 border border-stone-700 rounded px-2 py-0.5 text-[10px] transition-colors"
               >
                 {sampleName}
               </button>
@@ -336,27 +336,22 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       )}
 
       {/* SECTION 1: LUXURY HERO COVER */}
-      <section className="relative min-h-screen flex flex-col items-center justify-between text-center p-8 overflow-hidden">
-
-        {/* ANIMATED AMBIENT DECOR (Boroo, Stars, Moon/Sun Glow) */}
+      <section className="relative isolate min-h-screen overflow-hidden px-5 py-10 text-center sm:px-8 sm:py-14">
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_10%_10%,rgba(193,220,234,.55),transparent_24%),radial-gradient(circle_at_90%_18%,rgba(227,240,211,.65),transparent_22%),linear-gradient(180deg,#fffef9_0%,#f7fbf5_100%)]" />
+        <div className="absolute left-0 top-0 -z-10 h-56 w-56 rounded-full border-[18px] border-[#dbe9f0]/50 blur-[1px]" />
+        <div className="absolute bottom-0 right-0 -z-10 h-64 w-64 rounded-full border-[22px] border-[#e2efd7]/60 blur-[1px]" />
         <AmbientDecorOverlay effectType="all" />
-
-        {/* Hero Background Image with Gradient Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={normalizeImageUrl(invitationData.heroPhotoUrl)}
-            alt="Hero Background"
-            className="w-full h-full object-cover filter brightness-[0.4] scale-105 transition-all duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-stone-950/80"></div>
+        <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-xl flex-col items-center justify-between rounded-[2.5rem] border border-[#dbe7e9] bg-white/70 p-6 shadow-[0_18px_55px_rgba(95,127,135,0.12)] backdrop-blur-sm sm:p-10">
+        <div className="absolute inset-x-0 top-0 -z-10 h-64 overflow-hidden rounded-t-[2.5rem] opacity-25">
+          <img src={normalizeImageUrl(invitationData.heroPhotoUrl)} alt="" className="h-full w-full object-cover" />
         </div>
 
         {/* Top Eyebrow */}
         <div className="relative z-10 pt-10 space-y-2">
-          <span className="text-[11px] font-sans uppercase tracking-[0.3em] text-amber-300/90 font-light block">
+          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#78939b] font-bold block">
             {invitationData.eventTitle || 'THE WEDDING CELEBRATION OF'}
           </span>
-          <div className="w-12 h-px bg-amber-400/50 mx-auto"></div>
+          <div className="mx-auto h-px w-16 bg-[#9ebfc8]"></div>
         </div>
 
         {/* Center Main Subject Name display */}
@@ -365,19 +360,19 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-5xl md:text-6xl font-serif text-amber-100 font-light tracking-wide leading-tight drop-shadow-lg"
+            className="text-3xl sm:text-5xl md:text-6xl font-serif text-[#486c78] font-light tracking-wide leading-tight drop-shadow-sm"
           >
             {invitationData.brideName && invitationData.groomName ? (
               <>
                 {invitationData.brideName}
-                <span className="block text-2xl sm:text-4xl text-amber-400/80 my-2 font-sans italic">&</span>
+                <span className="block text-2xl sm:text-4xl text-[#9bbdcb] my-2 font-sans italic">&</span>
                 {invitationData.groomName}
               </>
             ) : invitationData.birthdayPersonName ? (
               <>
                 {invitationData.birthdayPersonName}
                 {invitationData.age && (
-                  <span className="block text-xl sm:text-2xl text-amber-400 my-2 font-sans">
+                  <span className="block text-xl sm:text-2xl text-[#779ca6] my-2 font-sans">
                     {invitationData.age}
                   </span>
                 )}
@@ -386,7 +381,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               <>
                 {invitationData.childName}
                 {invitationData.age && (
-                  <span className="block text-xl sm:text-2xl text-amber-400 my-2 font-sans">
+                  <span className="block text-xl sm:text-2xl text-[#779ca6] my-2 font-sans">
                     {invitationData.age}
                   </span>
                 )}
@@ -409,21 +404,21 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
             initial={{ opacity: 0, scale: 0.9, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="my-6 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-stone-900/90 via-stone-950/95 to-stone-900/90 border-2 border-amber-400/40 shadow-[0_0_50px_rgba(212,175,55,0.25)] backdrop-blur-xl max-w-xl mx-auto space-y-3 relative overflow-hidden"
+            className="my-6 max-w-xl space-y-3 rounded-[2rem] border border-[#cddfe3] bg-white/85 p-6 shadow-[0_12px_30px_rgba(96,132,143,0.12)] backdrop-blur-xl sm:p-8"
           >
             <div className="absolute -top-12 -right-12 w-28 h-28 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
-            <div className="text-xs uppercase tracking-[0.25em] text-amber-300 font-sans font-bold flex items-center justify-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <div className="flex items-center justify-center gap-2 font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#6b919c]">
+              <Sparkles className="w-3.5 h-3.5 text-[#779ca6]" />
               <span>ХҮНДЭТГЭЛИЙН УРИЛГА</span>
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 text-[#779ca6]" />
             </div>
 
-            <p className="text-base sm:text-2xl md:text-3xl font-serif font-bold text-amber-100 leading-snug tracking-wide">
-              Эрхэм хүндэт: <span className="text-[#f9e5af] font-extrabold underline decoration-amber-400/60 underline-offset-8">{personalizedGuestName || 'Мягмарцэрэн'}</span> таныг гэр бүлийн хамт <span className="text-amber-300 font-extrabold">{invitationData.eventTitle || 'Баярын Арга Хэмжээ'}</span>-нд морилон ирэхийг урьж байна...
+            <p className="font-serif text-base font-bold leading-snug tracking-wide text-[#557682] sm:text-2xl md:text-3xl">
+              Эрхэм хүндэт: <span className="text-[#537b88] font-extrabold underline decoration-amber-400/60 underline-offset-8">{personalizedGuestName || 'Мягмарцэрэн'}</span> таныг гэр бүлийн хамт <span className="text-[#638c98] font-extrabold">{invitationData.eventTitle || 'Баярын Арга Хэмжээ'}</span>-нд морилон ирэхийг урьж байна...
             </p>
           </motion.div>
 
-          <p className="text-xs sm:text-sm font-sans tracking-widest text-amber-200/80 uppercase font-light">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#718d94] sm:text-sm">
             {invitationData.date} {invitationData.time && `• ${invitationData.time}`}
           </p>
         </div>
@@ -447,27 +442,28 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                 window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
               }
             }}
-            className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f9e5af] to-[#b38b2d] text-slate-950 font-extrabold text-sm sm:text-base tracking-widest uppercase shadow-[0_0_35px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.7)] transition-all cursor-pointer font-sans group border border-amber-100 active:scale-95"
+            className="group relative inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#a9c9d2] bg-[#dceff2] px-8 py-4 font-sans text-sm font-extrabold uppercase tracking-widest text-[#3e6672] shadow-[0_8px_20px_rgba(93,137,146,0.18)] transition-all hover:bg-[#cce6ea] active:scale-95 sm:text-base"
           >
             <Mail className="w-5 h-5 text-slate-950 animate-bounce" />
             <span>УРИЛГА НЭЭХ</span>
             <ChevronDown className="w-5 h-5 text-slate-950 group-hover:translate-y-1 transition-transform" />
           </motion.button>
 
-          <p className="text-[11px] font-sans text-amber-200/80 tracking-widest uppercase animate-pulse">
+          <p className="font-sans text-[10px] font-semibold uppercase tracking-widest text-[#7b969d]">
             Товчлуур дээр дарж баярын хөтөлбөртэй танилцана уу
           </p>
+        </div>
         </div>
       </section>
 
       {/* SECTION 2: PARENTS & BLESSING MESSAGE */}
-      <section id="invitation-content-section" className="py-20 px-6 max-w-3xl mx-auto text-center space-y-8">
+      <section id="invitation-content-section" className="relative z-10 mx-auto max-w-3xl space-y-8 px-6 py-20 text-center">
 
         {/* Family Acknowledgement / Category Details */}
         {(invitationData.brideParents || invitationData.groomParents || invitationData.fatherName || invitationData.motherName || invitationData.parentsNames || invitationData.schoolName || invitationData.clanLeader) && (
           <div className="space-y-4">
             <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-[#d4af37]">Баярын Эзэд & Эцэг Эх</span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs font-sans text-stone-300 leading-relaxed pt-2 border-t border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs font-sans text-[#5d777d] leading-relaxed pt-2 border-t border-white/10">
               {invitationData.brideParents && (
                 <div>
                   <span className="block text-[#f9e5af] font-semibold mb-1">Сүйт бүсгүйн тал</span>
@@ -528,7 +524,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               {invitationData.customFields.map((cf) => (
                 <div key={cf.id} className="p-3 bg-white/5 rounded-xl border border-white/5">
                   <span className="block text-[#f9e5af] font-semibold mb-0.5">{cf.label}</span>
-                  <span className="text-stone-200">{cf.value}</span>
+                  <span className="text-[#45636b]">{cf.value}</span>
                 </div>
               ))}
             </div>
@@ -538,7 +534,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
         {/* Invitation Body Message */}
         <div className="bg-black/40 backdrop-blur-xl p-8 rounded-3xl border border-white/10 space-y-4 shadow-2xl relative">
           <div className="w-8 h-8 mx-auto text-[#d4af37] font-serif text-3xl">“</div>
-          <p className="text-sm sm:text-base text-stone-200 font-serif leading-relaxed italic">
+          <p className="text-sm sm:text-base text-[#45636b] font-serif leading-relaxed italic">
             {invitationData.invitationMessage}
           </p>
 
@@ -572,7 +568,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                       <strong className="font-sans text-2xl font-black leading-none tracking-tighter sm:text-4xl" style={{ color: unit.color }}>{String(unit.value).padStart(2, '0')}</strong>
                     </div>
                   </div>
-                  <span className="mt-1 block font-sans text-[7px] font-bold tracking-[0.12em] text-stone-400 sm:text-[9px]">{unit.sub}</span>
+                  <span className="mt-1 block font-sans text-[7px] font-bold tracking-[0.12em] text-[#728b90] sm:text-[9px]">{unit.sub}</span>
                 </div>
               ))}
             </div>
@@ -581,9 +577,9 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                 <span className="text-sm">🌤️</span><span>ЦАГ АГААР</span><span className="truncate text-[#aa842c]">📍 Улаанбаатар · Өнөөдөр</span>
               </div>
               <div className="mt-2 grid grid-cols-3 divide-x divide-[#eee6d5] text-center">
-                <div><span className="block text-[8px] text-stone-400">ДУВААН</span><strong className="text-[11px] text-stone-700">{weather.temperature}</strong></div>
-                <div><span className="block text-[8px] text-stone-400">ДАРАЛТ</span><strong className="text-[11px] text-stone-700">{weather.pressure}</strong></div>
-                <div><span className="block text-[8px] text-stone-400">ЧИЙГШИЛ</span><strong className="text-[11px] text-stone-700">{weather.humidity}</strong></div>
+                <div><span className="block text-[8px] text-[#728b90]">ДУВААН</span><strong className="text-[11px] text-stone-700">{weather.temperature}</strong></div>
+                <div><span className="block text-[8px] text-[#728b90]">ДАРАЛТ</span><strong className="text-[11px] text-stone-700">{weather.pressure}</strong></div>
+                <div><span className="block text-[8px] text-[#728b90]">ЧИЙГШИЛ</span><strong className="text-[11px] text-stone-700">{weather.humidity}</strong></div>
               </div>
             </div>
           </div>
@@ -592,22 +588,22 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 4: PROGRAM / SCHEDULE */}
       {invitationData.schedule && invitationData.schedule.length > 0 && (
-        <section className="py-20 px-6 max-w-2xl mx-auto space-y-10 text-center">
+        <section className="relative z-10 mx-auto max-w-2xl space-y-10 px-6 py-20 text-center">
           <div className="space-y-2">
-            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-400">Хөтөлбөр</span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-amber-100">Баярын Хөтөлбөр</h2>
+            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#779ca6]">Хөтөлбөр</span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#486c78]">Баярын Хөтөлбөр</h2>
           </div>
 
           <div className="space-y-6 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-1/2 before:w-px before:bg-stone-800">
             {invitationData.schedule.map((item, idx) => (
-              <div key={idx} className="relative bg-stone-900/80 p-5 rounded-2xl border border-stone-800 shadow-lg text-left max-w-md mx-auto space-y-1">
-                <div className="flex items-center justify-between text-xs font-sans text-amber-400 font-semibold mb-1">
+              <div key={idx} className="relative bg-white/85 p-5 rounded-2xl border border-[#dce7e3] shadow-lg text-left max-w-md mx-auto space-y-1">
+                <div className="flex items-center justify-between text-xs font-sans text-[#779ca6] font-semibold mb-1">
                   <span>{item.time}</span>
-                  <Clock className="w-3.5 h-3.5 text-amber-400/80" />
+                  <Clock className="w-3.5 h-3.5 text-[#779ca6]/80" />
                 </div>
-                <h3 className="font-serif text-base text-stone-100">{item.title}</h3>
+                <h3 className="font-serif text-base text-[#355760]">{item.title}</h3>
                 {item.description && (
-                  <p className="text-xs font-sans text-stone-400 leading-relaxed">{item.description}</p>
+                  <p className="text-xs font-sans text-[#728b90] leading-relaxed">{item.description}</p>
                 )}
               </div>
             ))}
@@ -616,16 +612,16 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       )}
 
       {/* SECTION 5: VENUE, MAP & CALENDAR */}
-      <section className="py-20 px-6 bg-stone-900/30 border-t border-stone-800 space-y-8 max-w-4xl mx-auto text-center">
+      <section className="relative z-10 mx-auto max-w-4xl space-y-8 border-y border-[#dce8df] bg-white/70 px-6 py-20 text-center">
         <div className="space-y-2">
-          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-400">Байршил Ба Огноо</span>
-          <h2 className="text-2xl sm:text-3xl font-serif text-amber-100">{invitationData.locationName}</h2>
-          <p className="text-xs font-sans text-stone-400 max-w-md mx-auto">{invitationData.address}</p>
+          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#779ca6]">Байршил Ба Огноо</span>
+          <h2 className="text-2xl sm:text-3xl font-serif text-[#486c78]">{invitationData.locationName}</h2>
+          <p className="text-xs font-sans text-[#728b90] max-w-md mx-auto">{invitationData.address}</p>
         </div>
 
         {/* Embedded Google Map */}
         {invitationData.googleMapsEmbedUrl && (
-          <div className="rounded-3xl border border-stone-800 overflow-hidden shadow-2xl h-80 bg-stone-900">
+          <div className="rounded-3xl border border-[#dce7e3] overflow-hidden shadow-2xl h-80 bg-stone-900">
             <iframe
               title="Venue Location Map"
               src={invitationData.googleMapsEmbedUrl}
@@ -653,9 +649,9 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
             href={generateGoogleCalendarUrl()}
             target="_blank"
             rel="noreferrer"
-            className="bg-stone-900 hover:bg-stone-800 text-stone-200 border border-stone-700 px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2"
+            className="bg-stone-900 hover:bg-stone-800 text-[#45636b] border border-stone-700 px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2"
           >
-            <Calendar className="w-4 h-4 text-amber-400" />
+            <Calendar className="w-4 h-4 text-[#779ca6]" />
             <span>Календарьт Нэмэх</span>
           </a>
         </div>
@@ -663,10 +659,10 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 6: DRESS CODE */}
       {invitationData.dressCode && (
-        <section className="py-16 px-6 max-w-xl mx-auto text-center space-y-4">
-          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-400">Хувцаслалтын Дүрэм</span>
-          <h3 className="text-xl font-serif text-amber-100">{invitationData.dressCode.title}</h3>
-          <p className="text-xs font-sans text-stone-300 leading-relaxed max-w-md mx-auto">
+        <section className="relative z-10 mx-auto max-w-xl space-y-4 px-6 py-16 text-center">
+          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#779ca6]">Хувцаслалтын Дүрэм</span>
+          <h3 className="text-xl font-serif text-[#486c78]">{invitationData.dressCode.title}</h3>
+          <p className="text-xs font-sans text-[#5d777d] leading-relaxed max-w-md mx-auto">
             {invitationData.dressCode.description}
           </p>
 
@@ -687,10 +683,10 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 7: PHOTO GALLERY LIGHTBOX */}
       {invitationData.showGallery && invitationData.couplePhotos && invitationData.couplePhotos.length > 0 && (
-        <section className="py-20 px-6 max-w-4xl mx-auto text-center space-y-8">
+        <section className="relative z-10 mx-auto max-w-4xl space-y-8 px-6 py-20 text-center">
           <div className="space-y-2">
-            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-400">Дурсамжит Зургууд</span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-amber-100">Зургийн Цомог</h2>
+            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#779ca6]">Дурсамжит Зургууд</span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#486c78]">Зургийн Цомог</h2>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -698,15 +694,15 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               <div
                 key={pIdx}
                 onClick={() => setSelectedPhotoIndex(pIdx)}
-                className="aspect-square rounded-2xl overflow-hidden border border-stone-800 cursor-pointer group relative bg-stone-900"
+                className="aspect-square rounded-2xl overflow-hidden border border-[#dce7e3] cursor-pointer group relative bg-stone-900"
               >
                 <img
                   src={normalizeImageUrl(photo)}
                   alt={`Couple photo ${pIdx + 1}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-stone-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                  <Camera className="w-6 h-6 text-amber-300" />
+                <div className="absolute inset-0 bg-[#f7fbf8]/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                  <Camera className="w-6 h-6 text-[#638c98]" />
                 </div>
               </div>
             ))}
@@ -716,11 +712,11 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 8: RSVP FORM & INSTANT QR BADGE */}
       {invitationData.showRsvp && (
-        <section className="py-20 px-6 max-w-xl mx-auto text-center space-y-6">
+        <section className="relative z-10 mx-auto max-w-xl space-y-6 px-6 py-20 text-center">
           <div className="space-y-2">
-            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-400">Ирэх Эсэхээ Мэдэгдэх</span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-amber-100">RSVP - Бүртгэл & QR Нэвтрэх Пасс</h2>
-            <p className="text-xs font-sans text-stone-400">Та хүрэлцэн ирэх эсэхээ тэмдэглэж бидэнд тусална уу</p>
+            <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-[#779ca6]">Ирэх Эсэхээ Мэдэгдэх</span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#486c78]">RSVP - Бүртгэл & QR Нэвтрэх Пасс</h2>
+            <p className="text-xs font-sans text-[#728b90]">Та хүрэлцэн ирэх эсэхээ тэмдэглэж бидэнд тусална уу</p>
           </div>
 
           {rsvpSubmitted ? (
@@ -729,7 +725,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               <div className="bg-emerald-950/60 border border-emerald-500/40 p-5 rounded-3xl text-emerald-300 text-xs space-y-1.5 shadow-xl">
                 <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
                 <h4 className="font-bold text-sm text-white">Баярлалаа! Таны бүртгэлийг хүлээн авлаа</h4>
-                <p className="text-stone-300">
+                <p className="text-[#5d777d]">
                   {submittedAttendance === 'attending' ? 'Таны VIP нэвтрэх QR пасс бэлэн боллоо. Арга хэмжээний үүдэнд уншуулна уу.' :
                    submittedAttendance === 'maybe' ? 'Таны хариуг тэмдэглэн авлаа. Та дараа шийдвэрээ шинэчлэх боломжтой.' :
                    'Мэдээлэл өгсөнд баярлалаа.'}
@@ -738,16 +734,16 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
               {/* VIP QR BADGE CARD (When Attending or Maybe) */}
               {(submittedAttendance === 'attending' || submittedAttendance === 'maybe') && generatedQrPassUrl && (
-                <div className="bg-gradient-to-b from-stone-900 via-stone-950 to-stone-900 p-6 sm:p-8 rounded-3xl border-2 border-amber-500/40 text-stone-100 font-sans shadow-2xl relative overflow-hidden space-y-5">
+                <div className="bg-gradient-to-b from-stone-900 via-stone-950 to-stone-900 p-6 sm:p-8 rounded-3xl border-2 border-amber-500/40 text-[#355760] font-sans shadow-2xl relative overflow-hidden space-y-5">
 
                   {/* Subtle Gold Accents */}
                   <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
                   <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
                   {/* Pass Header */}
-                  <div className="space-y-1 border-b border-stone-800 pb-4">
-                    <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-amber-400 uppercase tracking-widest">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <div className="space-y-1 border-b border-[#dce7e3] pb-4">
+                    <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-[#779ca6] uppercase tracking-widest">
+                      <Sparkles className="w-3.5 h-3.5 text-[#779ca6]" />
                       <span>VIP EVENT ENTRANCE PASS</span>
                     </div>
                     <h3 className="text-lg font-serif text-[#f9e5af] font-bold">
@@ -756,13 +752,13 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   </div>
 
                   {/* Guest Info & Token */}
-                  <div className="bg-stone-900/90 p-4 rounded-2xl border border-stone-800 space-y-2 text-center">
-                    <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Зочны Нэр</span>
+                  <div className="bg-stone-900/90 p-4 rounded-2xl border border-[#dce7e3] space-y-2 text-center">
+                    <span className="text-[10px] uppercase font-bold text-[#728b90] tracking-wider block">Зочны Нэр</span>
                     <h4 className="text-xl font-bold text-white font-serif">{submittedGuestName}</h4>
 
-                    <div className="pt-2 border-t border-stone-800 flex items-center justify-center gap-2">
-                      <span className="text-[10px] text-stone-400 uppercase">Токен Код:</span>
-                      <span className="text-sm font-mono font-bold text-amber-300 bg-stone-950 px-2.5 py-0.5 rounded border border-amber-500/30">
+                    <div className="pt-2 border-t border-[#dce7e3] flex items-center justify-center gap-2">
+                      <span className="text-[10px] text-[#728b90] uppercase">Токен Код:</span>
+                      <span className="text-sm font-mono font-bold text-[#638c98] bg-[#f7fbf8] px-2.5 py-0.5 rounded border border-amber-500/30">
                         {generatedBadgeToken}
                       </span>
                     </div>
@@ -781,19 +777,19 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   </div>
 
                   {/* Date & Location */}
-                  <div className="text-xs space-y-1 text-stone-300">
-                    <div className="flex items-center justify-center gap-1 text-amber-300 font-semibold">
+                  <div className="text-xs space-y-1 text-[#5d777d]">
+                    <div className="flex items-center justify-center gap-1 text-[#638c98] font-semibold">
                       <Calendar className="w-3.5 h-3.5" />
                       <span>{invitationData.date} ({invitationData.time})</span>
                     </div>
-                    <div className="flex items-center justify-center gap-1 text-stone-400 text-[11px]">
-                      <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                    <div className="flex items-center justify-center gap-1 text-[#728b90] text-[11px]">
+                      <MapPin className="w-3.5 h-3.5 text-[#779ca6]" />
                       <span>{invitationData.locationName}</span>
                     </div>
                   </div>
 
                   {/* Secondary Device Fingerprint Indicator */}
-                  <div className="pt-3 border-t border-stone-800/80 flex items-center justify-between text-[10px] text-stone-500 font-mono">
+                  <div className="pt-3 border-t border-[#dce7e3]/80 flex items-center justify-between text-[10px] text-stone-500 font-mono">
                     <span className="flex items-center gap-1">
                       <Smartphone className="w-3 h-3 text-amber-500/70" />
                       <span>Төхөөрөмж: {deviceFingerprintId}</span>
@@ -817,7 +813,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
                     <button
                       onClick={() => setRsvpSubmitted(false)}
-                      className="px-4 py-3 bg-stone-900 hover:bg-stone-800 text-stone-300 rounded-xl text-xs font-semibold border border-stone-800 transition-colors"
+                      className="px-4 py-3 bg-stone-900 hover:bg-stone-800 text-[#5d777d] rounded-xl text-xs font-semibold border border-[#dce7e3] transition-colors"
                     >
                       Хариу шинэчлэх
                     </button>
@@ -827,33 +823,33 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               )}
             </div>
           ) : (
-            <form onSubmit={handleRsvpSubmit} className="bg-stone-900 p-6 sm:p-8 rounded-3xl border border-stone-800 text-left font-sans text-xs space-y-4 shadow-2xl">
+            <form onSubmit={handleRsvpSubmit} className="bg-white/90 p-6 sm:p-8 rounded-3xl border border-[#dce7e3] text-left font-sans text-xs space-y-4 shadow-2xl">
               <div>
-                <label className="block text-stone-300 font-medium mb-1">Таны бүтэн нэр *</label>
+                <label className="block text-[#5d777d] font-medium mb-1">Таны бүтэн нэр *</label>
                 <input
                   type="text"
                   required
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   placeholder="Жишээ: Д.Батбаатар"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-stone-100 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl px-3.5 py-2.5 text-[#355760] focus:border-amber-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-stone-300 font-medium mb-1">Утасны дугаар</label>
+                <label className="block text-[#5d777d] font-medium mb-1">Утасны дугаар</label>
                 <input
                   type="text"
                   value={guestPhone}
                   onChange={(e) => setGuestPhone(e.target.value)}
                   placeholder="99110000"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-stone-100 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl px-3.5 py-2.5 text-[#355760] focus:border-amber-500 focus:outline-none"
                 />
               </div>
 
               {/* 3 RSVP Choices: Attending / Maybe / Declined */}
               <div>
-                <label className="block text-stone-300 font-medium mb-1.5">Та хүрэлцэн ирэх үү? *</label>
+                <label className="block text-[#5d777d] font-medium mb-1.5">Та хүрэлцэн ирэх үү? *</label>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
@@ -861,7 +857,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                     className={`py-3 px-2 rounded-xl font-bold text-xs transition-all border flex flex-col items-center gap-1 ${
                       attendance === 'attending'
                         ? 'bg-amber-500 text-stone-950 border-amber-400 shadow-md shadow-amber-500/20'
-                        : 'bg-stone-950 text-stone-400 border-stone-800 hover:border-stone-700'
+                        : 'bg-[#f7fbf8] text-[#728b90] border-[#dce7e3] hover:border-stone-700'
                     }`}
                   >
                     <UserCheck className="w-4 h-4" />
@@ -873,8 +869,8 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                     onClick={() => setAttendance('maybe')}
                     className={`py-3 px-2 rounded-xl font-bold text-xs transition-all border flex flex-col items-center gap-1 ${
                       attendance === 'maybe'
-                        ? 'bg-amber-500/30 text-amber-300 border-amber-500/60 shadow-md'
-                        : 'bg-stone-950 text-stone-400 border-stone-800 hover:border-stone-700'
+                        ? 'bg-amber-500/30 text-[#638c98] border-amber-500/60 shadow-md'
+                        : 'bg-[#f7fbf8] text-[#728b90] border-[#dce7e3] hover:border-stone-700'
                     }`}
                   >
                     <HelpCircle className="w-4 h-4" />
@@ -887,7 +883,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                     className={`py-3 px-2 rounded-xl font-bold text-xs transition-all border flex flex-col items-center gap-1 ${
                       attendance === 'declined'
                         ? 'bg-stone-800 text-rose-300 border-stone-600 shadow-md'
-                        : 'bg-stone-950 text-stone-400 border-stone-800 hover:border-stone-700'
+                        : 'bg-[#f7fbf8] text-[#728b90] border-[#dce7e3] hover:border-stone-700'
                     }`}
                   >
                     <UserX className="w-4 h-4" />
@@ -899,21 +895,21 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               {(attendance === 'attending' || attendance === 'maybe') && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-stone-300 font-medium mb-1">Хүний тоо</label>
+                    <label className="block text-[#5d777d] font-medium mb-1">Хүний тоо</label>
                     <select
                       value={guestCount}
                       onChange={(e) => setGuestCount(Number(e.target.value))}
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-stone-100 focus:border-amber-500 focus:outline-none"
+                      className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl px-3.5 py-2.5 text-[#355760] focus:border-amber-500 focus:outline-none"
                     >
                       {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n} хүн</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-stone-300 font-medium mb-1">Хоолны сонголт</label>
+                    <label className="block text-[#5d777d] font-medium mb-1">Хоолны сонголт</label>
                     <select
                       value={mealPref}
                       onChange={(e) => setMealPref(e.target.value)}
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-stone-100 focus:border-amber-500 focus:outline-none"
+                      className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl px-3.5 py-2.5 text-[#355760] focus:border-amber-500 focus:outline-none"
                     >
                       <option value="Standard Gourmet">Стандарт цэс</option>
                       <option value="Pan-Seared Salmon">Салмон загас</option>
@@ -924,13 +920,13 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
               )}
 
               <div>
-                <label className="block text-stone-300 font-medium mb-[2px]">Сэтгэлийн үг / Тэмдэглэл</label>
+                <label className="block text-[#5d777d] font-medium mb-[2px]">Сэтгэлийн үг / Тэмдэглэл</label>
                 <textarea
                   rows={2}
                   value={rsvpNote}
                   onChange={(e) => setRsvpNote(e.target.value)}
                   placeholder="Нэмэлт тэмдэглэл..."
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-stone-100 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl p-3 text-[#355760] focus:border-amber-500 focus:outline-none"
                 />
               </div>
 
@@ -948,14 +944,14 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 9: GUESTBOOK & WISHES */}
       {invitationData.showGuestBook && (
-        <section className="py-20 px-6 max-w-2xl mx-auto space-y-8 text-center font-sans">
+        <section className="relative z-10 mx-auto max-w-2xl space-y-8 px-6 py-20 text-center font-sans">
           <div className="space-y-2">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400">Ерөөлийн Үгс</span>
-            <h2 className="text-2xl sm:text-3xl font-serif text-amber-100">Зочдын Ном</h2>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-[#779ca6]">Ерөөлийн Үгс</span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#486c78]">Зочдын Ном</h2>
           </div>
 
           {/* Leave a wish form */}
-          <div className="bg-stone-900 p-6 rounded-3xl border border-stone-800 text-left text-xs space-y-3 shadow-xl">
+          <div className="bg-white/90 p-6 rounded-3xl border border-[#dce7e3] text-left text-xs space-y-3 shadow-xl">
             <h3 className="font-bold text-white text-sm">Сэтгэлийн Ерөөл Үлдээх</h3>
 
             {wishSubmitted ? (
@@ -970,7 +966,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   value={wishName}
                   onChange={(e) => setWishName(e.target.value)}
                   placeholder="Таны нэр"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2 text-stone-100 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl px-3.5 py-2 text-[#355760] focus:border-amber-500 focus:outline-none"
                 />
 
                 <textarea
@@ -979,7 +975,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
                   value={wishMsg}
                   onChange={(e) => setWishMsg(e.target.value)}
                   placeholder="Залуу хосод зориулсан ерөөлөө бичнэ үү..."
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-stone-100 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-[#f7fbf8] border border-[#dce7e3] rounded-xl p-3 text-[#355760] focus:border-amber-500 focus:outline-none"
                 />
 
                 <button
@@ -995,12 +991,12 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
           {/* List of existing wishes */}
           <div className="space-y-3 text-left">
             {(invitationData.wishes || []).map((wish) => (
-              <div key={wish.id} className="bg-stone-900/60 p-4 rounded-2xl border border-stone-800 space-y-1">
-                <div className="flex justify-between items-center text-[11px] text-amber-300 font-semibold">
+              <div key={wish.id} className="bg-white/80 p-4 rounded-2xl border border-[#dce7e3] space-y-1">
+                <div className="flex justify-between items-center text-[11px] text-[#638c98] font-semibold">
                   <span>{wish.guestName}</span>
                   <span className="text-[10px] text-stone-500 font-normal">{new Date(wish.submittedAt).toLocaleDateString()}</span>
                 </div>
-                <p className="text-xs text-stone-200 italic font-serif leading-relaxed">"{wish.message}"</p>
+                <p className="text-xs text-[#45636b] italic font-serif leading-relaxed">"{wish.message}"</p>
               </div>
             ))}
           </div>
@@ -1024,19 +1020,19 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       )}
 
       {/* FOOTER */}
-      <footer className="py-12 px-6 border-t border-stone-800 text-center font-sans text-xs text-stone-500 space-y-3">
-        <p className="text-stone-300 font-serif text-sm">
+      <footer className="py-12 px-6 border-t border-[#dce7e3] text-center font-sans text-xs text-stone-500 space-y-3">
+        <p className="text-[#5d777d] font-serif text-sm">
           {invitationData.brideName} & {invitationData.groomName}
         </p>
-        <div className="flex items-center justify-center gap-1.5 text-[11px] text-stone-400">
+        <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#728b90]">
           <span>Бүтээсэн:</span>
           <a
             href="https://aura.mn"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 font-bold text-amber-400 hover:text-amber-300 transition-colors bg-stone-900 border border-amber-500/30 px-2.5 py-1 rounded-full shadow-sm"
+            className="inline-flex items-center gap-1 font-bold text-[#779ca6] hover:text-[#638c98] transition-colors bg-white border border-[#bdd5d9] px-2.5 py-1 rounded-full shadow-sm"
           >
-            <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" />
+            <Sparkles className="w-3 h-3 text-[#779ca6] animate-pulse" />
             <span>Аура Дижитал Урилга Платформ</span>
           </a>
         </div>
@@ -1044,18 +1040,18 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* LIGHTBOX PHOTO MODAL */}
       {selectedPhotoIndex !== null && invitationData.couplePhotos && (
-        <div className="fixed inset-0 z-50 bg-stone-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-[#f7fbf8]/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="max-w-3xl w-full text-center space-y-3 relative">
             <button
               onClick={() => setSelectedPhotoIndex(null)}
-              className="absolute top-2 right-2 text-white bg-stone-900/80 p-2 rounded-full border border-stone-800"
+              className="absolute top-2 right-2 text-white bg-white/85 p-2 rounded-full border border-[#dce7e3]"
             >
               ✕
             </button>
             <img
               src={normalizeImageUrl(invitationData.couplePhotos[selectedPhotoIndex])}
               alt="Expanded photo"
-              className="max-h-[80vh] mx-auto rounded-2xl object-contain border border-stone-800"
+              className="max-h-[80vh] mx-auto rounded-2xl object-contain border border-[#dce7e3]"
             />
           </div>
         </div>
