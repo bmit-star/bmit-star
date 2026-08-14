@@ -74,5 +74,5 @@ export function isYouTubeUrl(url: string | undefined | null): boolean {
  */
 export function getShortInvitationUrl(uniqueSlug: string): string {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://zallaga.art';
-  return `${origin}/?u=${uniqueSlug}`;
+  return `${origin}/invent/${encodeURIComponent(uniqueSlug)}`;
 }

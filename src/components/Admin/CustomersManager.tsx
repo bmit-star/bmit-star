@@ -16,7 +16,7 @@ export const CustomersManager: React.FC<CustomersManagerProps> = ({
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
 
   const handleCopyLink = (email: string) => {
-    const url = `${window.location.origin}/customer/login?email=${encodeURIComponent(email)}`;
+    const url = `${window.location.origin}/costumer?email=${encodeURIComponent(email)}`;
     navigator.clipboard.writeText(url);
     setCopiedEmail(email);
     setTimeout(() => setCopiedEmail(null), 2000);

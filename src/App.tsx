@@ -281,7 +281,7 @@ export function AppContent() {
               <CustomerDashboardPage
                 orders={orders}
                 onRequestChange={handleCustomerRequestChange}
-                onOpenGuestView={(ord) => window.open(`/invite/${ord.uniqueSlug || ord.id}`, '_blank')}
+                onOpenGuestView={(ord) => window.open(`/invent/${ord.uniqueSlug || ord.id}`, '_blank')}
                 onUpdateOrder={handleSaveOrder}
               />
             }
@@ -289,8 +289,13 @@ export function AppContent() {
         </Route>
 
         {/* GUEST PUBLIC INVITATION SUBSYSTEM ROUTES */}
+        <Route path="/invent" element={<Navigate to="/" replace />} />
         <Route path="/invite" element={<Navigate to="/" replace />} />
         <Route element={<GuestLayout />}>
+          <Route
+            path="/invent/:slug"
+            element={<GuestInvitationPage orders={orders} />}
+          />
           <Route
             path="/invite/:slug"
             element={<GuestInvitationPage orders={orders} />}
