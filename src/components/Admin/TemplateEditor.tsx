@@ -9,6 +9,7 @@ import { Order, InvitationData, ScheduleItem, BankDetail, CustomField } from '..
 import { CATEGORIES, getCategoryConfig } from '../../data/categories';
 import { DevicePreviewFrame } from '../Shared/DevicePreviewFrame';
 import { LuxuryInvitationView } from '../Guest/LuxuryInvitationView';
+import { CloudinaryService } from '../../lib/cloudinaryService';
 
 interface TemplateEditorProps {
   order: Order;
@@ -36,6 +37,8 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
   const [previewMode, setPreviewMode] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
   const [showPublishedModal, setShowPublishedModal] = useState<boolean>(false);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [isBackgroundUploading, setIsBackgroundUploading] = useState(false);
+  const [backgroundUploadError, setBackgroundUploadError] = useState('');
 
   // Get current category config
   const currentCategoryConfig = getCategoryConfig(invData.category || 'Хурим');
@@ -46,6 +49,22 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleBackgroundUpload = async (file?: File) => {
+    if (!file) return;
+
+    setIsBackgroundUploading(true);
+    setBackgroundUploadError('');
+    const result = await CloudinaryService.uploadImage(file, order.id);
+    setIsBackgroundUploading(false);
+
+    if (!result.success) {
+      setBackgroundUploadError(result.error || 'Дэвсгэр зургийг хадгалж чадсангүй.');
+      return;
+    }
+
+    handleFieldChange('backgroundImageUrl', result.url);
   };
 
   // Helper for Category change
@@ -579,6 +598,54 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({
                       className="mt-2 h-32 w-full object-cover rounded-xl border border-white/10"
                     />
                   )}
+                </div>
+
+                <div className="rounded-2xl border border-[#d4af37]/30 bg-[#d4af37]/5 p-4 space-y-3">
+                  <div>
+                    <h4 className="text-sm font-semibold text-[#f9e5af]">Урилгын бүтэн дэвсгэр</h4>
+                    <p className="text-[11px] text-white/55 mt-1">Энэ зураг hero-оос бусад бүх section-ийн ард харагдана. Шууд image URL эсвэл Cloudinary URL оруулна уу.</p>
+                  </div>
+                  <label className="block rounded-xl border border-dashed border-white/20 bg-black/20 px-3 py-2.5 text-center text-xs text-white/70 cursor-pointer hover:border-[#d4af37]/60 transition-colors">
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleBackgroundUpload(e.target.files?.[0])} />
+                    {isBackgroundUploading ? 'Cloudinary руу хадгалж байна…' : 'Зураг сонгож Cloudinary руу байрлуулах'}
+                  </label>
+                  {backgroundUploadError && <p className="text-xs text-rose-300">{backgroundUploadError}</p>}
+                  <input
+                    type="url"
+                    value={invData.backgroundImageUrl || ''}
+                    onChange={(e) => handleFieldChange('backgroundImageUrl', e.target.value)}
+                    placeholder="https://res.cloudinary.com/.../background.jpg"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white focus:border-[#d4af37] focus:outline-none font-mono text-[11px]"
+                  />
+                  {invData.backgroundImageUrl && <img src={invData.backgroundImageUrl} alt="Background preview" className="h-28 w-full rounded-xl border border-white/10 object-cover" />}
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className="text-[11px] text-white/70 space-y-1">Position
+                      <select value={invData.backgroundPosition || 'center top'} onChange={(e) => handleFieldChange('backgroundPosition', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-2 text-white">
+                        <option value="center top">Дээд гол</option><option value="center center">Төв</option><option value="center bottom">Доод гол</option><option value="left top">Зүүн дээд</option><option value="right top">Баруун дээд</option>
+                      </select>
+                    </label>
+                    <label className="text-[11px] text-white/70 space-y-1">Image fit
+                      <select value={invData.backgroundSize || 'cover'} onChange={(e) => handleFieldChange('backgroundSize', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-2 text-white">
+                        <option value="cover">Бүтэн дүүргэх</option><option value="contain">Бүтнээр харуулах</option><option value="auto">Original хэмжээ</option>
+                      </select>
+                    </label>
+                    <label className="text-[11px] text-white/70 space-y-1">Scroll effect
+                      <select value={invData.backgroundAttachment || 'fixed'} onChange={(e) => handleFieldChange('backgroundAttachment', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-2 text-white">
+                        <option value="fixed">Дэлгэцэнд тогтоох</option><option value="scroll">Контенттой хамт гүйлгэх</option>
+                      </select>
+                    </label>
+                    <label className="text-[11px] text-white/70 space-y-1">Repeat
+                      <select value={invData.backgroundRepeat || 'no-repeat'} onChange={(e) => handleFieldChange('backgroundRepeat', e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-2 text-white">
+                        <option value="no-repeat">Давтахгүй</option><option value="repeat">Давтах</option><option value="repeat-y">Босоогоор давтах</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
+                    <input type="color" value={invData.backgroundOverlayColor || '#0c0a09'} onChange={(e) => handleFieldChange('backgroundOverlayColor', e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer bg-black/40 border border-white/10 p-1" aria-label="Overlay color" />
+                    <label className="text-[11px] text-white/70">Overlay darkness: {invData.backgroundOverlayOpacity ?? 20}%
+                      <input type="range" min="0" max="90" step="5" value={invData.backgroundOverlayOpacity ?? 20} onChange={(e) => handleFieldChange('backgroundOverlayOpacity', Number(e.target.value))} className="w-full accent-[#d4af37]" />
+                    </label>
+                  </div>
                 </div>
 
                 <div>

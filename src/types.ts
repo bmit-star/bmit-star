@@ -129,6 +129,13 @@ export interface InvitationData {
   // Custom Options & Style
   themeColor: string; // e.g., '#C5A059' (Champagne Gold)
   secondaryColor?: string; // e.g., '#1B2A22' (Emerald)
+  backgroundImageUrl?: string; // Full invitation background image
+  backgroundOverlayColor?: string; // Hex color layered over the background image
+  backgroundOverlayOpacity?: number; // 0-100
+  backgroundPosition?: string; // CSS background-position
+  backgroundSize?: 'cover' | 'contain' | 'auto';
+  backgroundRepeat?: 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y';
+  backgroundAttachment?: 'fixed' | 'scroll';
   backgroundMusicUrl?: string;
   backgroundMusicTitle?: string;
 

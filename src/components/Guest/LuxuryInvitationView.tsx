@@ -191,9 +191,28 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
   };
 
   const primaryColor = invitationData.themeColor || '#C5A059';
+  const backgroundImageUrl = invitationData.backgroundImageUrl?.trim();
+  const backgroundOverlayOpacity = Math.min(100, Math.max(0, invitationData.backgroundOverlayOpacity ?? 20));
+  const backgroundStyle: React.CSSProperties | undefined = backgroundImageUrl ? {
+    backgroundImage: `url(${normalizeImageUrl(backgroundImageUrl)})`,
+    backgroundPosition: invitationData.backgroundPosition || 'center top',
+    backgroundSize: invitationData.backgroundSize || 'cover',
+    backgroundRepeat: invitationData.backgroundRepeat || 'no-repeat',
+    backgroundAttachment: invitationData.backgroundAttachment || 'fixed'
+  } : undefined;
 
   return (
     <div className="bg-stone-950 text-stone-100 font-serif selection:bg-amber-500/30 min-h-screen relative overflow-x-hidden">
+      {backgroundImageUrl && (
+        <>
+          <div className="fixed inset-0 z-0 pointer-events-none" style={backgroundStyle} aria-hidden="true" />
+          <div
+            className="fixed inset-0 z-0 pointer-events-none"
+            style={{ backgroundColor: invitationData.backgroundOverlayColor || '#0c0a09', opacity: backgroundOverlayOpacity / 100 }}
+            aria-hidden="true"
+          />
+        </>
+      )}
       
       {/* Background Audio / YouTube Player */}
       {invitationData.showMusicPlayer && invitationData.backgroundMusicUrl && (
