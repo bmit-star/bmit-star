@@ -375,7 +375,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    if (!customerEmail.trim() || !customerName.trim()) {
+      return;
+    }
+
     const chosenTemplate = templates.find(t => t.id === selectedTemplateId) || templates[0];
     const newOrderNumber = `INV-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const slug = `urilga-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -391,8 +395,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     const newOrder: Order = {
       id: 'ord-' + Date.now(),
       orderNumber: newOrderNumber,
-      customerName: customerName || 'Шинэ Захиалагч',
-      customerEmail: customerEmail || 'client@gmail.com',
+      customerName: customerName.trim(),
+      customerEmail: customerEmail.trim().toLowerCase(),
       customerPhone: customerPhone || '+976 9900-0000',
       templateId: chosenTemplate?.id || 'tmpl-1',
       templateTitle: chosenTemplate?.title || 'Тансаг Загвар',

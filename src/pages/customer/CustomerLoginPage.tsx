@@ -22,8 +22,8 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({
     const trimmedEmail = emailInput.trim().toLowerCase();
     const trimmedOrder = orderNumberInput.trim().toUpperCase();
 
-    if (!trimmedEmail) {
-      setError('Имэйл хаягаа оруулна уу.');
+    if (!trimmedEmail || !trimmedOrder) {
+      setError('Имэйл хаяг болон захиалгын дугаараа оруулна уу.');
       return;
     }
 
@@ -36,14 +36,12 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({
       return;
     }
 
-    if (trimmedOrder) {
-      const matchWithOrderNumber = matches.find(
-        (o) => o.orderNumber.toUpperCase() === trimmedOrder || o.id === trimmedOrder
-      );
-      if (!matchWithOrderNumber) {
-        setError(`"${trimmedOrder}" захиалгын дугаар ${trimmedEmail} имэйлд харгалзахгүй байна.`);
-        return;
-      }
+    const matchWithOrderNumber = matches.find(
+      (o) => o.orderNumber.toUpperCase() === trimmedOrder || o.id === trimmedOrder
+    );
+    if (!matchWithOrderNumber) {
+      setError(`"${trimmedOrder}" захиалгын дугаар ${trimmedEmail} имэйлд харгалзахгүй байна.`);
+      return;
     }
 
     setError('');
@@ -94,10 +92,11 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-white/80 block flex items-center gap-1.5">
               <KeyRound className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>Захиалгын Дугаар (Заавал биш)</span>
+              <span>Захиалгын Дугаар *</span>
             </label>
             <input
               type="text"
+              required
               value={orderNumberInput}
               onChange={(e) => {
                 setOrderNumberInput(e.target.value);

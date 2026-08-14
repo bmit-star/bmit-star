@@ -11,6 +11,7 @@ import {
 } from './lib/storage';
 import { AIAssistantDrawer } from './modules/admin';
 import { auth } from './lib/firebase';
+import { authenticatedFetch } from './lib/authenticatedFetch';
 
 // Code-split Lazy Component Imports for optimal bundle separation
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -54,9 +55,9 @@ export function AppContent() {
   // Admin access is granted only after Firebase Authentication is verified by the server.
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
-  // Customer Auth State (localStorage with default fallback for direct access)
+  // Customer portal state is restored only after a successful order lookup.
   const [authenticatedEmail, setAuthenticatedEmail] = useState<string>(() => {
-    return localStorage.getItem('customer_login_email') || 'bolor@gmail.com';
+    return localStorage.getItem('customer_login_email') || '';
   });
 
   // Global Data State
@@ -75,8 +76,20 @@ export function AppContent() {
     setCustomers(getStoredCustomers());
   }, []);
 
-  useEffect(() => onAuthStateChanged(auth, (user) => {
-    if (!user) setIsAdminAuthenticated(false);
+  useEffect(() => onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      setIsAdminAuthenticated(false);
+      return;
+    }
+
+    try {
+      const response = await authenticatedFetch('/api/auth/admin');
+      setIsAdminAuthenticated(response.ok);
+      if (!response.ok) await signOut(auth);
+    } catch {
+      setIsAdminAuthenticated(false);
+      await signOut(auth);
+    }
   }), []);
 
   const handleAdminLogout = async () => {
@@ -241,7 +254,10 @@ export function AppContent() {
           element={
             <CustomerLoginPage
               orders={orders}
-              onLoginSuccess={(email) => setAuthenticatedEmail(email)}
+              onLoginSuccess={(email) => {
+                localStorage.setItem('customer_login_email', email);
+                setAuthenticatedEmail(email);
+              }}
             />
           }
         />
@@ -273,7 +289,7 @@ export function AppContent() {
         </Route>
 
         {/* GUEST PUBLIC INVITATION SUBSYSTEM ROUTES */}
-        <Route path="/invite" element={<Navigate to="/invite/demo" replace />} />
+        <Route path="/invite" element={<Navigate to="/" replace />} />
         <Route element={<GuestLayout />}>
           <Route
             path="/invite/:slug"

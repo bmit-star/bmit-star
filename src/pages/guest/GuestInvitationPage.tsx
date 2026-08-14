@@ -14,8 +14,8 @@ export const GuestInvitationPage: React.FC<GuestInvitationPageProps> = ({ orders
   const guestName = searchParams.get('to') || '';
 
   const matchedOrder = orders.find(
-    o => o.uniqueSlug === slug || o.id === slug || o.orderNumber === slug
-  ) || orders[0];
+    (order) => order.uniqueSlug === slug || order.id === slug || order.orderNumber === slug
+  );
 
   useEffect(() => {
     if (matchedOrder) {
