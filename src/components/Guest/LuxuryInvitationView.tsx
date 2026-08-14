@@ -92,6 +92,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
   };
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [weather, setWeather] = useState({ temperature: '--', pressure: '--', humidity: '--' });
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -109,6 +110,30 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
     const interval = window.setInterval(updateCountdown, 1000);
     return () => window.clearInterval(interval);
   }, [invitationData.date, invitationData.time]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadWeather = async () => {
+      try {
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.9184&longitude=106.9177&current=temperature_2m,relative_humidity_2m,pressure_msl&temperature_unit=celsius&timezone=Asia%2FUlaanbaatar');
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!cancelled && data.current) {
+          setWeather({
+            temperature: `${Number(data.current.temperature_2m).toFixed(1)}°C`,
+            pressure: `${Math.round(data.current.pressure_msl)} hPa`,
+            humidity: `${Math.round(data.current.relative_humidity_2m)}%`
+          });
+        }
+      } catch {
+        // Countdown remains useful when weather is unavailable.
+      }
+    };
+
+    loadWeather();
+    const interval = window.setInterval(loadWeather, 15 * 60 * 1000);
+    return () => { cancelled = true; window.clearInterval(interval); };
+  }, []);
 
   const toggleMusic = () => {
     if (isYouTubeMusic) {
@@ -528,28 +553,38 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
       {/* SECTION 3: EVENT COUNTDOWN */}
       {invitationData.showCountdown && (
-        <section className="relative z-10 px-4 py-14 sm:px-6">
-          <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/50 bg-white/80 p-4 shadow-[0_20px_60px_rgba(47,71,99,0.18)] backdrop-blur-xl sm:p-6">
-            <div className="mb-5 text-center">
-              <span className="font-sans text-[10px] font-bold uppercase tracking-[0.28em]" style={{ color: primaryColor }}>Баярын өдөр хүртэл</span>
-              <p className="mt-2 font-serif text-sm text-stone-500">{invitationData.date} · {invitationData.time}</p>
+        <section className="relative z-10 px-3 py-10 sm:px-6">
+          <div className="mx-auto max-w-xl rounded-2xl border border-[#eadfbf] bg-[#fffdf7]/95 p-3 shadow-[0_12px_32px_rgba(130,105,48,0.12)] backdrop-blur-xl sm:p-4">
+            <div className="mb-3 text-center">
+              <span className="font-sans text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#b68a2c]">Баярын өдөр хүртэл үлдсэн хугацаа</span>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {[
-                { label: 'ӨДӨР', value: timeLeft.days, color: '#d97706', max: 30 },
-                { label: 'ЦАГ', value: timeLeft.hours, color: '#2563eb', max: 24 },
-                { label: 'МИНУТ', value: timeLeft.minutes, color: '#8b5cf6', max: 60 },
-                { label: 'СЕКУНД', value: timeLeft.seconds, color: '#059669', max: 60 }
+                { label: 'ӨДӨР', value: timeLeft.days, sub: 'DAYS', color: '#f1a51d', soft: '#fff4d9', max: 30 },
+                { label: 'ЦАГ', value: timeLeft.hours, sub: 'HOURS', color: '#1689ff', soft: '#eaf5ff', max: 24 },
+                { label: 'МИНУТ', value: timeLeft.minutes, sub: 'MINS', color: '#8b5cf6', soft: '#f3edff', max: 60 },
+                { label: 'СЕК', value: timeLeft.seconds, sub: 'SECS', color: '#31a866', soft: '#e8f8ee', max: 60 }
               ].map((unit) => (
-                <div key={unit.label} className="relative isolate min-h-36 overflow-hidden rounded-3xl border border-stone-200 bg-white/90 px-3 py-5 text-center shadow-sm">
-                  <div className="absolute inset-3 rounded-full border border-current opacity-20" style={{ color: unit.color }} />
-                  <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-current border-r-current opacity-80" style={{ color: unit.color, transform: `rotate(${(unit.value / unit.max) * 360}deg)` }} />
-                  <div className="relative z-10 flex h-full flex-col items-center justify-center">
-                    <span className="font-sans text-[10px] font-extrabold tracking-[0.16em]" style={{ color: unit.color }}>{unit.label}</span>
-                    <strong className="mt-2 font-sans text-5xl font-black tracking-tighter" style={{ color: unit.color }}>{String(unit.value).padStart(2, '0')}</strong>
+                <div key={unit.label} className="relative isolate min-w-0 overflow-hidden rounded-xl border p-2 text-center shadow-sm sm:rounded-2xl sm:p-3" style={{ backgroundColor: unit.soft, borderColor: `${unit.color}55` }}>
+                  <div className="mx-auto flex aspect-square max-w-[82px] items-center justify-center rounded-full border border-white/90 bg-white/80 shadow-inner" style={{ background: `conic-gradient(${unit.color} ${(unit.value / unit.max) * 360}deg, transparent 0)` }}>
+                    <div className="flex h-[calc(100%-7px)] w-[calc(100%-7px)] flex-col items-center justify-center rounded-full bg-white">
+                      <span className="font-sans text-[8px] font-extrabold tracking-wide sm:text-[10px]" style={{ color: unit.color }}>{unit.label}</span>
+                      <strong className="font-sans text-2xl font-black leading-none tracking-tighter sm:text-4xl" style={{ color: unit.color }}>{String(unit.value).padStart(2, '0')}</strong>
+                    </div>
                   </div>
+                  <span className="mt-1 block font-sans text-[7px] font-bold tracking-[0.12em] text-stone-400 sm:text-[9px]">{unit.sub}</span>
                 </div>
               ))}
+            </div>
+            <div className="mt-3 rounded-xl border border-[#eee6d5] bg-white/75 px-3 py-2 font-sans">
+              <div className="flex items-center gap-2 text-[9px] font-semibold text-stone-500">
+                <span className="text-sm">🌤️</span><span>ЦАГ АГААР</span><span className="truncate text-[#aa842c]">📍 Улаанбаатар · Өнөөдөр</span>
+              </div>
+              <div className="mt-2 grid grid-cols-3 divide-x divide-[#eee6d5] text-center">
+                <div><span className="block text-[8px] text-stone-400">ДУВААН</span><strong className="text-[11px] text-stone-700">{weather.temperature}</strong></div>
+                <div><span className="block text-[8px] text-stone-400">ДАРАЛТ</span><strong className="text-[11px] text-stone-700">{weather.pressure}</strong></div>
+                <div><span className="block text-[8px] text-stone-400">ЧИЙГШИЛ</span><strong className="text-[11px] text-stone-700">{weather.humidity}</strong></div>
+              </div>
             </div>
           </div>
         </section>
