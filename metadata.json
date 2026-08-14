@@ -1,0 +1,6 @@
+{
+  "name": "Заллага - Дижитал Урилга",
+  "description": "Монголын анхны дижитал урилгын сайт - Заллага платформ. Хурим, баяр ёслолын тансаг цахим урилга.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
