@@ -27,10 +27,24 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 }) => {
   const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [showCinematicIntro, setShowCinematicIntro] = useState(true);
+  const [introReady, setIntroReady] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cinematicIntroUrl = 'https://res.cloudinary.com/sk0s89bg/video/upload/v1786686160/0e9962a6-cde8-4339-8ede-b6fdbd9b2cf6.mp4';
 
   const youtubeVideoId = extractYouTubeVideoId(invitationData.backgroundMusicUrl);
   const isYouTubeMusic = Boolean(youtubeVideoId);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShowCinematicIntro(false);
+    }
+  }, []);
+
+  const openInvitation = () => {
+    setShowCinematicIntro(false);
+    window.setTimeout(() => document.getElementById('invitation-hero')?.focus(), 350);
+  };
 
   // RSVP Form State
   const [personalizedGuestName, setPersonalizedGuestName] = useState<string>('Мягмарцэрэн');
@@ -239,6 +253,38 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-[#fffdf7] text-[#314b52] font-serif selection:bg-[#dcefee]">
+      <AnimatePresence>
+        {showCinematicIntro && (
+          <motion.section
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.08, filter: 'blur(10px)' }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[100] flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#12080B] px-5"
+            aria-label="Урилгын нээлтийн animation"
+          >
+            <video
+              src={cinematicIntroUrl}
+              autoPlay
+              muted
+              playsInline
+              preload="metadata"
+              onCanPlay={() => setIntroReady(true)}
+              onError={() => setIntroReady(true)}
+              onEnded={openInvitation}
+              className="absolute inset-0 h-full w-full object-cover opacity-70"
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_15%,rgba(18,8,11,.48)_70%,#12080B_100%)]" />
+            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="relative z-10 max-w-xs text-center">
+              <div className="mx-auto mb-5 h-px w-16 bg-[#C9A45C]" />
+              <p className="font-serif text-4xl tracking-[.28em] text-[#E4C98A]">УРИЛГА</p>
+              <p className="mt-3 font-sans text-[10px] uppercase tracking-[.22em] text-[#B8A99A]">Тансаг дижитал урилга</p>
+              <button onClick={openInvitation} className="mt-10 min-h-11 rounded-full border border-[#C9A45C]/70 bg-[#12080B]/60 px-6 font-sans text-xs font-bold uppercase tracking-[.16em] text-[#E4C98A] backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[#E4C98A]">
+                {introReady ? 'Нээж үргэлжлүүлэх' : 'Ачаалж байна…'}
+              </button>
+            </motion.div>
+          </motion.section>
+        )}
+      </AnimatePresence>
       {backgroundImageUrl && (
         <>
           <div className="fixed inset-0 z-0 pointer-events-none" style={backgroundStyle} aria-hidden="true" />
@@ -336,7 +382,7 @@ export const LuxuryInvitationView: React.FC<LuxuryInvitationViewProps> = ({
       )}
 
       {/* SECTION 1: LUXURY HERO COVER */}
-      <section className="relative isolate min-h-screen overflow-hidden px-5 py-10 text-center sm:px-8 sm:py-14">
+      <section id="invitation-hero" tabIndex={-1} className="relative isolate min-h-screen overflow-hidden px-5 py-10 text-center outline-none sm:px-8 sm:py-14">
         <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_10%_10%,rgba(193,220,234,.55),transparent_24%),radial-gradient(circle_at_90%_18%,rgba(227,240,211,.65),transparent_22%),linear-gradient(180deg,#fffef9_0%,#f7fbf5_100%)]" />
         <div className="absolute left-0 top-0 -z-10 h-56 w-56 rounded-full border-[18px] border-[#dbe9f0]/50 blur-[1px]" />
         <div className="absolute bottom-0 right-0 -z-10 h-64 w-64 rounded-full border-[22px] border-[#e2efd7]/60 blur-[1px]" />
